@@ -1,0 +1,8 @@
+C:\Users\Ana.Julia\Downloads\thotiana\INeedThat\bin\Debug\INeedThat.exe.config
+C:\Users\Ana.Julia\Downloads\thotiana\INeedThat\bin\Debug\INeedThat.exe
+C:\Users\Ana.Julia\Downloads\thotiana\INeedThat\bin\Debug\INeedThat.pdb
+C:\Users\Ana.Julia\Downloads\thotiana\INeedThat\obj\Debug\INeedThat.csproj.AssemblyReference.cache
+C:\Users\Ana.Julia\Downloads\thotiana\INeedThat\obj\Debug\INeedThat.csproj.CoreCompileInputs.cache
+C:\Users\Ana.Julia\Downloads\thotiana\INeedThat\obj\Debug\INeedThat.exe
+C:\Users\Ana.Julia\Downloads\thotiana\INeedThat\obj\Debug\INeedThat.pdb
+C:\Users\Ana.Julia\Downloads\thotiana\INeedThat\obj\Debug\INeedThat.exe.config
