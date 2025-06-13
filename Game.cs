@@ -12,31 +12,48 @@ namespace INeedThat
         public List<Player> Players { get; private set; }
         public Map GameMap { get; private set; }
 
-
-
+        
+        public int Turn { get; private set; }
+        public bool AlreadyBought = false;
+        public bool AlreadyOpenMarket = false;
+        public int lastDice = 0;
+        public int lastQuantity = 0;
 
         //method to create the players
         public void CreatePlayers(Game game)
         {
 
             Players = new List<Player>();
-            int numPlayers = Input.ReadInt("How many do you want in the game?(Max:5)");
+            int numPlayers = Input.ReadInt("How many players do you want in the game?(Max:5)");
             //guaranteeing correct input
             while (numPlayers > 5 || numPlayers <= 1)
             {
-                numPlayers = Input.ReadInt("How many do you want in the game?(Max:5)");
+                Console.WriteLine("Minimal number of player is 2");
+                numPlayers = Input.ReadInt("How many players do you want in the game?(Max:5)");
             }
-
+            bool humanPlayerCreated = false;
             //for to create the numbers of players wanted
             for (int i = 0; i < numPlayers; i++)
             {
-                string playerName = Input.ReadString("\nFaction Name:");
 
-                Console.WriteLine("Player is human?");
-                int ishuman = YesorNoInput();
-                //guarante correct input
+                string playerName = Input.ReadString("\nFaction Name:");
+                int ishuman = 2;
+                if (humanPlayerCreated == false)
+                {
+                    Console.WriteLine("Player is human?");
+                    ishuman = YesorNoInput();
+                    if (ishuman == 1)
+                    {
+                        humanPlayerCreated = true;
+                    }
+                    //guarante correct input
+                }
+
+
 
                 //if the player is human he will be playable
+
+
                 if (ishuman == 1)
                 {
                     Player player = new Player(playerName, i, true);
@@ -239,11 +256,13 @@ namespace INeedThat
                     case 3:
                         break;
                     case 4:
+                        Gun.Market(game, actualPlayer);
                         break;
                     case 5:
+                        game.EndTurn();
                         break;
                     case 123:
-
+                        gameRunning = game.Exit(actualPlayer);
                         break;
 
 
@@ -624,11 +643,14 @@ namespace INeedThat
             {
                 foreach (Crew crewmember in player.PlayerCrew)
                 {
-                    if (crewmember.Location.HoodID == hoodSelected.HoodID)
+                    if (crewmember.Location != null)
                     {
-                        CrewinHood.Add(crewmember);
+                        if (crewmember.Location.HoodID == hoodSelected.HoodID)
+                        {
+                            CrewinHood.Add(crewmember);
 
 
+                        }
                     }
                 }
             }
@@ -712,8 +734,116 @@ namespace INeedThat
 
 
               */
+            Console.ReadKey();
         }
 
+        public bool Exit(Player player)
+        {
+            Console.WriteLine("Exiting from the game");
+            Console.WriteLine("Score:" + player.Cash * 1 + player.PlayerCrew.Count * 50 + player.GunStock.Count * 20);
+            Console.ReadKey();
+            return false;
+        }
+
+        public void EndTurn()
+        {
+            Console.WriteLine("Turn Ended");
+            Turn += 1;
+            Console.WriteLine("Turn:" + Turn);
+            Police();
+            PrisonReleases();
+            Console.ReadKey();
+            AlreadyBought = false;
+            AlreadyOpenMarket = false;
+            Console.Clear();
+        }
+
+        private void Police()
+        {
+            Random random = new Random();
+            int dice = 0;
+            foreach (Player player in Players)
+            {
+                foreach (Crew crew in player.PlayerCrew)
+                {
+                    if (crew.Heat >= 10)
+                    {
+                        Console.WriteLine($"{crew.Name} from {crew.Aff.Name}get caught by the narcs");
+                        crew.MonthsInPrison = crew.Heat / 10 * 12;
+                        Console.WriteLine("Condened to"+crew.MonthsInPrison);
+                        player.PlayerCrew.Remove(crew);
+                        player.InPrisonCrew.Add(crew);
+
+                    }
+                    else if (crew.Heat >=7)
+                    {
+                        
+                        dice = random.Next(1,10+1);
+                        if (dice < 7)
+                        {
+                            Console.WriteLine($"{crew.Name} from {crew.Aff.Name}get caught by the narcs");
+                            crew.MonthsInPrison = crew.Heat / 7 * 9;
+                            Console.WriteLine("Condened to" + crew.MonthsInPrison);
+                            player.PlayerCrew.Remove(crew);
+                            player.InPrisonCrew.Add(crew);
+                        }
+
+                    }
+                    else if (crew.Heat >= 5)
+                    {
+                        dice = random.Next(1, 10 + 1);
+                        if (dice < 5)
+                        {
+                            Console.WriteLine($"{crew.Name} from {crew.Aff.Name}get caught by the narcs");
+                            crew.MonthsInPrison = crew.Heat / 5 * 7;
+                            Console.WriteLine("Condened to" + crew.MonthsInPrison);
+                            player.PlayerCrew.Remove(crew);
+                            player.InPrisonCrew.Add(crew);
+                        }
+
+                    }
+                    else if (crew.Heat >= 3)
+                    {
+                        dice = random.Next(1, 10 + 1);
+                        if (dice < 3)
+                        {
+                            Console.WriteLine($"{crew.Name} from {crew.Aff.Name}get caught by the narcs");
+                            crew.MonthsInPrison = crew.Heat / 3 * 5;
+                            Console.WriteLine("Condened to" + crew.MonthsInPrison);
+                            player.PlayerCrew.Remove(crew);
+                            player.InPrisonCrew.Add(crew);
+                        }
+
+                    }
+
+                }
+            }
+        }
+        private void PrisonReleases()
+        {
+            foreach(Player player in Players)
+            {
+                foreach(Crew crew in player.InPrisonCrew)
+                {
+                    crew.MonthsInPrison -= 1;
+                }
+            }
+            foreach(Player player in Players)
+            {
+                foreach (Crew crew in player.InPrisonCrew)
+                {
+                    if (crew.MonthsInPrison == 0)
+                    {
+                        player.InPrisonCrew.Remove(crew);
+                        player.PlayerCrew.Add(crew);
+
+                        Console.WriteLine($"{crew.Name} from {crew.Aff.Name} get his libery");
+                        crew.Heat = crew.Heat / 2;
+                    }
+                }
+            }
+
+        }
 
         public int YesorNoInput()
         {
