@@ -30,7 +30,11 @@ namespace INeedThat
 
             Console.WriteLine(text);
             string input = Console.ReadLine();
-
+            while (string.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("Null or empty");
+                input = Console.ReadLine();
+            }
 
             return input;
         }

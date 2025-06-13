@@ -34,7 +34,7 @@ namespace INeedThat
             return $"{Name} FIR:{Firepower} USED:{usedBy}\n";
         }
 
-        private static int LastGunIdUsed(Player player)
+        public static int LastGunIdUsed(Player player)
         {
             int lastUsed = 0;
             foreach (Gun gun in player.GunStock)

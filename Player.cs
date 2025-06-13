@@ -15,14 +15,14 @@ namespace INeedThat
         public List<Crew> PlayerCrew { get; set; }
         public int Respect { get; set; }
         public List<Gun> GunStock { get; set; }
-        public List<Crew> InPrisonCrew {  get; set; }
+        public List<Crew> InPrisonCrew { get; set; }
 
         public Player(string name, int playerid, bool human)
         {
             Name = name;
             Human = human;
             PlayerID = playerid;
-            Cash = 10000;
+            Cash = 100000;
             PlayerCrew = new List<Crew>();
             Respect = 0;
             GunStock = new List<Gun>();

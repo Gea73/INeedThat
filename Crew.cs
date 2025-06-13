@@ -18,10 +18,10 @@ namespace INeedThat
         public int Hustle { get; private set; }
         public int Snoop { get; private set; }
         public int Loyalty { get; private set; }
-        public int Heat { get;  set; }
+        public int Heat { get; set; }
         public bool Lieutenant { get; set; }
         public bool Captain { get; set; }
-        public int MonthsInPrison {  get; set; }
+        public int MonthsInPrison { get; set; }
         public Crew(string name, Player aff, Gun gunEquip, int brutality, int hustle, int snoop, int loyalty, int crewid)
         {
             Name = name;
@@ -72,7 +72,7 @@ namespace INeedThat
         }
 
 
-        public static void LieutenantReports(Player player, Game game)
+        public static void LieutenantReports(Game game, Player player)
         {
 
             foreach (Crew crew in player.PlayerCrew)
@@ -82,7 +82,7 @@ namespace INeedThat
                 {
 
 
-                    crew.Reports(player, game);
+                    crew.Reports(game, player);
 
                 }
 
@@ -90,7 +90,7 @@ namespace INeedThat
 
         }
 
-        private void Reports(Player player, Game game)
+        private void Reports(Game game, Player player)
         {
             Random random = new Random();
             Console.Write("Lieutenant:" + Name);
@@ -171,7 +171,7 @@ namespace INeedThat
                     List<Crew> traitorsList = new List<Crew>();
                     if (Loyalty > 4)
                     {
-                        foreach(Crew crew in player.PlayerCrew)
+                        foreach (Crew crew in player.PlayerCrew)
                         {
                             if (crew.Loyalty <= 1)
                             {
@@ -184,7 +184,7 @@ namespace INeedThat
                             foreach (Crew crew in traitorsList)
                             {
                                 Console.WriteLine(crew.Name);
-                                
+
                             }
                             choice = game.YesorNoInput();
                             if (choice == 1)
@@ -213,10 +213,81 @@ namespace INeedThat
                     }
                     break;
                 case 4:
+                    Crew crewToRelease = null;
+                    foreach (Crew crew in player.InPrisonCrew)
+                    {
+                        if (crewToRelease == null && crew.Heat < 7)
+                        {
+                            crewToRelease = crew;
+                        }
+                    }
+                    if (crewToRelease != null)
+                    {
+                        Console.WriteLine("I founded a attorney that can release out one of our boys for a pack");
+                        Console.WriteLine("$15.000 to release");
+                        choice = game.YesorNoInput();
+                    }
+                    else
+                    {
+                        Console.WriteLine("I founded a attorney that can clean some registers");
+                        {
+                            crewToRelease = game.CrewSelection(player);
+                            if (crewToRelease.Heat > 5)
+                            {
+                                Console.WriteLine($"$15.000 to clean {crewToRelease.Name}");
+                                choice = game.YesorNoInput();
+                                if (choice == 1 && player.Cash >= 15000)
+                                {
+                                    Console.WriteLine("Register cleaned");
+                                    crewToRelease.Heat = 0;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Nothing done");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($"$7.000 to clean {crewToRelease.Name}");
+                                choice = game.YesorNoInput();
+                                if (choice == 1 && player.Cash >= 7000)
+                                {
+                                    Console.WriteLine("Register cleaned");
+                                    crewToRelease.Heat = 0;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Nothing done");
+                                }
+                            }
+                        }
+                    }
+                    Console.ReadKey();
                     break;
                 case 5:
+                    Console.WriteLine("I got a contact that have some sticks to sell");
+                    Console.WriteLine("5 .38 revolvers for $3.500");
+                    choice = game.YesorNoInput();
+                    if (choice == 1 && player.Cash >= 3500)
+                    {
+                        player.Cash = player.Cash - 3500;
+                        int lastGunId = Gun.LastGunIdUsed(player);
+                        for (int i = 1; i <= 5; i++)
+                        {
+                            Gun gun = new Gun("Revolver .38", 3, lastGunId + i);
+                            player.GunStock.Add(gun);
+
+                        }
+                        Console.WriteLine("Added to our arsenal");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nothing done");
+                    }
+                    Console.ReadKey();
                     break;
                 case 6:
+
                     break;
                 case 7:
                     break;
