@@ -83,7 +83,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("Revolver .22", 2, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -117,7 +117,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("Taurus G2 9mm", 4, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -153,7 +153,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("G19", 5, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -187,7 +187,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("Revolver .38", 3, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -222,7 +222,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("Shotgun 12", 7, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -258,7 +258,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("Knife", 1, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -293,7 +293,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("Rifle T4 5.56mm", 12, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -329,7 +329,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("FAL 7.62", 14, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -365,7 +365,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("AK-47", 16, lastGunId + i);
                                     player.GunStock.Add(gun);
@@ -401,7 +401,7 @@ namespace INeedThat
                             if (player.Cash >= cost)
                             {
                                 player.Cash -= cost;
-                                for (int i = 1; i < quantity; i++)
+                                for (int i = 1; i <= quantity; i++)
                                 {
                                     Gun gun = new Gun("MP5", 9, lastGunId + i);
                                     player.GunStock.Add(gun);

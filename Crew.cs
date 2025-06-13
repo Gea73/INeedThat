@@ -17,7 +17,7 @@ namespace INeedThat
         public int Brutality { get; private set; }
         public int Hustle { get; private set; }
         public int Snoop { get; private set; }
-        public int Loyalty { get; private set; }
+        public int Loyalty { get; set; }
         public int Heat { get; set; }
         public bool Lieutenant { get; set; }
         public bool Captain { get; set; }
@@ -287,13 +287,97 @@ namespace INeedThat
                     Console.ReadKey();
                     break;
                 case 6:
+                    Console.WriteLine("Hey boss maybe you can give some money to us,we deserve a bonus for all our work");
+                    Console.Write("Give $20.000? ");
+                    choice = game.YesorNoInput();
+                    if (choice == 1 && player.Cash >= 20000)
+                    {
+                        foreach (Crew crew in player.PlayerCrew)
+                        {
+                            crew.Loyalty += 1;
+                        }
+                        Console.WriteLine("Loyalty increased for all members");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nothing done");
+                    }
+
+                    Console.ReadKey();
 
                     break;
                 case 7:
+                    Console.WriteLine("Sup boss i found a Armenian that want to show something you maybe want");
+                    Console.Write("3 MP5 for $15.000? ");
+                    choice = game.YesorNoInput();
+                    if (choice == 1 && player.Cash >= 15000)
+                    {
+                        int lastGunId = Gun.LastGunIdUsed(player);
+
+                        for (int i = 1; i <= 3; i++)
+                        {
+                            Gun gun = new Gun("MP5", 9, lastGunId + i);
+                            player.GunStock.Add(gun);
+                        }
+                        Console.WriteLine("Guns bought");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nothing done");
+                    }
+
+                    Console.ReadKey();
                     break;
                 case 8:
+                    Console.WriteLine("Boss maybe we can send some gifs to make our guys behind bars more loyal");
+                    Console.Write("$15.000 ");
+                    choice = game.YesorNoInput();
+                    if(choice == 1 && player.Cash >= 15000)
+                    {
+                        player.Cash -= 15000;
+                        foreach(Crew crew in player.InPrisonCrew)
+                        {
+                            crew.Loyalty += 1;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nothing done");
+                    }
+
+                    Console.ReadKey();
                     break;
                 case 9:
+                    Console.WriteLine("Sup boss i found a guy wanting to buy some guns");
+                    Console.Write("He is offering $1.000 for low caliber guns and $5.000 ");
+                    choice = game.YesorNoInput();
+                    if (choice==1 && player.GunStock.Count > 0)
+                    {
+                        int gunSellProfit = 0;
+                        foreach(Gun gun in player.GunStock)
+                        {
+
+                            if (gun.Firepower >= 7)
+                            {
+                                player.Cash += 5000;
+                                player.GunStock.Remove(gun);
+                                gunSellProfit += 5000;
+                            }
+                            else
+                            {
+                                player.Cash += 1000;
+                                player.GunStock.Remove(gun);
+                                gunSellProfit += 1000;
+                            }
+                        }
+                        Console.WriteLine("We earned a stack:"+gunSellProfit);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nothing done");
+                    }
+
+                        Console.ReadKey();
                     break;
                 case 10:
                     int averageLoyalty = 0;

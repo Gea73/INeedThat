@@ -722,6 +722,7 @@ namespace INeedThat
                         Console.WriteLine("Condened to" + crew.MonthsInPrison);
                         player.PlayerCrew.Remove(crew);
                         player.InPrisonCrew.Add(crew);
+                        crew.Loyalty -= 1;
 
                     }
                     else if (crew.Heat >= 7)
@@ -735,6 +736,7 @@ namespace INeedThat
                             Console.WriteLine("Condened to" + crew.MonthsInPrison);
                             player.PlayerCrew.Remove(crew);
                             player.InPrisonCrew.Add(crew);
+                            crew.Loyalty -= 1;
                         }
 
                     }
@@ -748,6 +750,7 @@ namespace INeedThat
                             Console.WriteLine("Condened to" + crew.MonthsInPrison);
                             player.PlayerCrew.Remove(crew);
                             player.InPrisonCrew.Add(crew);
+                            crew.Loyalty -= 1;
                         }
 
                     }
@@ -761,6 +764,7 @@ namespace INeedThat
                             Console.WriteLine("Condened to" + crew.MonthsInPrison);
                             player.PlayerCrew.Remove(crew);
                             player.InPrisonCrew.Add(crew);
+                            crew.Loyalty -= 1;
                         }
 
                     }
