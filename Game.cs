@@ -16,6 +16,7 @@ namespace INeedThat
         public int Turn { get; private set; }
         public bool AlreadyBought = false;
         public bool AlreadyOpenMarket = false;
+        public bool AlreadyOpenReports = false;
         public int lastDice = 0;
         public int lastQuantity = 0;
 
@@ -41,12 +42,12 @@ namespace INeedThat
                 if (humanPlayerCreated == false)
                 {
                     Console.WriteLine("Player is human?");
-                    ishuman = YesorNoInput();
+                    ishuman = Input.YesorNoInput();
                     if (ishuman == 1)
                     {
                         humanPlayerCreated = true;
                     }
-                 
+
                     //guarante correct input
                 }
 
@@ -217,6 +218,7 @@ namespace INeedThat
             bool gameRunning = true;
             Player actualPlayer = null;
             //look for a human player to define as a real player
+
             foreach (Player player in game.Players)
             {
                 if (player.Human == true)
@@ -224,17 +226,20 @@ namespace INeedThat
                     actualPlayer = player;
                 }
             }
-            while (gameRunning)
 
+            while (gameRunning)
             {
+
                 //draw the map of hoods
                 DrawMap(game);
                 //show menu options
+                Console.WriteLine($"Faction:{actualPlayer.Name} Cash:${actualPlayer.Cash.ToString("#,0.00")} Respect:{actualPlayer.Respect} \nCrew:{actualPlayer.PlayerCrew.Count()} GunStock:{actualPlayer.GunStock.Count()}");
+
                 Console.WriteLine("Menu:");
                 Console.WriteLine("0:Move Crew:");
                 Console.WriteLine("1:Select Hood:");
                 Console.WriteLine("2:Select Crew:");
-                Console.WriteLine("3:Lieutenant Reports :");
+                Console.WriteLine("3:Lieutenant Reports:");
                 Console.WriteLine("4:Black Market:");
                 Console.WriteLine("5.End Turn:");
                 Console.WriteLine("123:Exit:");
@@ -257,7 +262,7 @@ namespace INeedThat
                         Gun.Market(game, actualPlayer);
                         break;
                     case 5:
-                        game.EndTurn();
+                        game.EndTurn(game, actualPlayer);
                         break;
                     case 123:
                         gameRunning = game.Exit(actualPlayer);
@@ -332,7 +337,7 @@ namespace INeedThat
 
         public void MoveCrew(Game game, Player player)
         {
-            
+
             Crew selectedCrew = CrewSelection(player);
 
             Console.WriteLine("Where you want to move?");
@@ -346,14 +351,20 @@ namespace INeedThat
                 }
 
 
-                int moveTo = Input.ReadInt("Type the index of the hood:");
+                int moveTo = Input.ReadInt("Type the index of the hood or -1 to exit:");
 
-                //guarante right input
-                while (moveTo < 0 && moveTo > game.GameMap.MapHoods.Count)
+                if (moveTo == -1)
                 {
-                    Console.WriteLine("Invalid choice.");
-                    moveTo = Input.ReadInt("Type the index of the hood:");
+                    Console.WriteLine("Exiting");
+                    Console.ReadKey();
                 }
+                else
+                    //guarante right input
+                    while (moveTo < 0 && moveTo > game.GameMap.MapHoods.Count)
+                    {
+                        Console.WriteLine("Invalid choice.");
+                        moveTo = Input.ReadInt("Type the index of the hood:");
+                    }
 
                 //search in the list and define the location of the movement as moveto id 
                 foreach (Hood hood in game.GameMap.MapHoods)
@@ -416,17 +427,20 @@ namespace INeedThat
 
 
             Crew selectedCrew = CrewSelection(player);
-            
+
 
             Console.WriteLine(selectedCrew);
             Console.WriteLine("1.Move Crew");
             Console.WriteLine("2.Equip Gun or remove");
-            Console.WriteLine("3.Promote");
+            if (selectedCrew.Lieutenant == false && selectedCrew.Captain == false)
+            {
+                Console.WriteLine("3.Promote");
+            }
             Console.WriteLine("4.Cancel");
 
             int option = Input.ReadInt("Type the option");
             //guarante right input
-            while (option < 1 || option > 3)
+            while (option < 1 || option > 4)
             {
                 Console.WriteLine("Invalid option");
                 option = Input.ReadInt("Type the option");
@@ -439,117 +453,22 @@ namespace INeedThat
                     MoveCrew(game, player);
                     break;
                 case 2:
-                    EquipGun(selectedCrew, player);
+                    selectedCrew.EquipGun(player);
                     break;
 
                 case 3:
-                    Promote(selectedCrew);
+                    selectedCrew.Promote();
                     break;
-
+                case 4:
+                    Console.WriteLine("Exiting");
+                    Console.ReadKey();
+                    break;
                 default:
                     Console.WriteLine("Invalid Value");
                     break;
             }
 
         }
-
-
-        private void EquipGun(Crew selectedCrew, Player player)
-        {
-            //if the crew have a gun
-            if (selectedCrew.GunEquip != null)
-            {
-                Console.WriteLine($"Gun equipped{selectedCrew.GunEquip.Name}");
-                Console.WriteLine("Remove it?");
-                int choice = YesorNoInput();
-
-                if (choice == 1)
-                {
-                    Gun gunRemoved = selectedCrew.GunEquip;
-                    selectedCrew.GunEquip = null;
-                    player.GunStock.Add(gunRemoved);
-                    Console.WriteLine($"Gun {gunRemoved.Name} back to the stock");
-                    Console.ReadKey();
-                }
-                //have changed the mind
-                else
-                {
-
-                    Console.WriteLine("Nothing done");
-                    Console.ReadKey();
-                }
-
-            }
-            //if dont have a gun equipped
-            else
-            {
-                Console.WriteLine("Guns Avaliable:");
-                //show guns in stock
-                foreach (Gun gun in player.GunStock)
-                {
-                    Console.WriteLine($"{gun.GunID}.{gun.Name}");
-                }
-
-                int gunSelected = Input.ReadInt("Type the index of the gun:");
-
-                //guarante right input
-                while (gunSelected < 0 && gunSelected > player.GunStock.Count())
-                {
-                    Console.WriteLine("Invalid choice.");
-                    gunSelected = Input.ReadInt("Type the index of the gun:");
-                }
-                //select the gun based in id
-                foreach (Gun gun in player.GunStock)
-                {
-                    if (gunSelected == gun.GunID)
-                    {
-                        selectedCrew.GunEquip = gun;
-                        Console.WriteLine($"{selectedCrew.Name} equipped {selectedCrew.GunEquip.Name}");
-                        Console.ReadKey();
-
-                    }
-                }
-
-            }
-
-
-
-        }
-
-        private void Promote(Crew selectedCrew)
-        {
-            //check if is already promoted
-            if (selectedCrew.Captain == true || selectedCrew.Lieutenant == true)
-            {
-
-                Console.WriteLine("This crew member is already a higher rank");
-            }
-            //is a soldier
-            else
-            {
-                Console.WriteLine("Really want to promote?");
-                Console.WriteLine(selectedCrew);
-                int choice = YesorNoInput();
-                //guarantee right input
-
-                //promote
-                if (choice == 1)
-                {
-                    selectedCrew.Lieutenant = true;
-                    Console.WriteLine($"{selectedCrew.Name} is a lieutenant now");
-
-                }
-                //changed mind
-                else
-                {
-                    Console.WriteLine("Nothing done");
-
-                }
-
-            }
-            Console.ReadKey();
-        }
-
 
         public void SelectHood(Game game, Player human)
         {
@@ -652,7 +571,7 @@ namespace INeedThat
             /* Crew selectedCrew = null;   Selecting and make a action with the crew member inside the hood selection
 
               Console.WriteLine("Select a crew member: 1-Yes 2-No");
-              int selectOrNo = YesorNoInput();
+              int selectOrNo = Input.YesorNoInput();
 
               if(selectOrNo == 1)
               {
@@ -694,8 +613,9 @@ namespace INeedThat
             return false;
         }
 
-        public void EndTurn()
+        public void EndTurn(Game game, Player player)
         {
+            Crew recruiter = new Crew(null, null, null, 0, 0, 0, 0, -1);
             Console.WriteLine("Turn Ended");
             Turn += 1;
             Console.WriteLine("Turn:" + Turn);
@@ -704,6 +624,9 @@ namespace INeedThat
             Console.ReadKey();
             AlreadyBought = false;
             AlreadyOpenMarket = false;
+            AlreadyOpenReports = false;
+            Console.Clear();
+            recruiter.RecruitCrew(game, player);
             Console.Clear();
         }
 
@@ -798,17 +721,10 @@ namespace INeedThat
 
         }
 
-        public int YesorNoInput()
-        {
-            int choice = Input.ReadInt("1.Yes 2.No");
-            //guarantee right input
-            while (choice < 1 || choice > 2)
-            {
-                Console.WriteLine("Invalid Input");
-                choice = Input.ReadInt("1.Yes 2.No");
-            }
-            return choice;
-        }
+      
+
+        
+
 
         public Crew CrewSelection(Player player)
         {

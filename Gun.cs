@@ -77,25 +77,16 @@ namespace INeedThat
                         cost = quantity * 500;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        int choice = game.YesorNoInput();
-                        if (choice == 1)
+                        int choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("Revolver .22", 2, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("Revolver .22", 2, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
                         }
                         else
                         {
@@ -111,25 +102,17 @@ namespace INeedThat
                         cost = quantity * 1500;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("Taurus G2 9mm", 4, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("Taurus G2 9mm", 4, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
                         }
                         else
                         {
@@ -147,25 +130,16 @@ namespace INeedThat
                         cost = quantity * 2000;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("G19", 5, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("G19", 5, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
                         }
                         else
                         {
@@ -181,25 +155,17 @@ namespace INeedThat
                         cost = quantity * 1000;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("Revolver .38", 3, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("Revolver .38", 3, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
                         }
                         else
                         {
@@ -216,25 +182,18 @@ namespace INeedThat
                         cost = quantity * 3000;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("Shotgun 12", 7, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("Shotgun 12", 7, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
+
+
                         }
                         else
                         {
@@ -252,25 +211,18 @@ namespace INeedThat
                         cost = quantity * 50;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("Knife", 1, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("Knife", 1, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
+
                         }
                         else
                         {
@@ -287,25 +239,18 @@ namespace INeedThat
                         cost = quantity * 10000;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("Rifle T4 5.56mm", 12, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("Rifle T4 5.56mm", 12, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
+
                         }
                         else
                         {
@@ -323,25 +268,17 @@ namespace INeedThat
                         cost = quantity * 15000;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("FAL 7.62", 14, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("FAL 7.62", 14, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
+
                         }
                         else
                         {
@@ -359,25 +296,16 @@ namespace INeedThat
                         cost = quantity * 20000;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("AK-47", 16, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("AK-47", 16, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
                         }
                         else
                         {
@@ -395,25 +323,17 @@ namespace INeedThat
                         cost = quantity * 7000;
                         Console.WriteLine("Costing:$" + cost);
                         Console.WriteLine("Buy?");
-                        choice = game.YesorNoInput();
-                        if (choice == 1)
+                        choice = Input.YesorNoInput();
+                        if (choice == 1 && player.Cash >= cost)
                         {
-                            if (player.Cash >= cost)
+                            player.Cash -= cost;
+                            for (int i = 1; i <= quantity; i++)
                             {
-                                player.Cash -= cost;
-                                for (int i = 1; i <= quantity; i++)
-                                {
-                                    Gun gun = new Gun("MP5", 9, lastGunId + i);
-                                    player.GunStock.Add(gun);
-                                }
+                                Gun gun = new Gun("MP5", 9, lastGunId + i);
+                                player.GunStock.Add(gun);
                             }
-                            else
-                            {
-                                Console.WriteLine("Insuficient funds");
-                                game.AlreadyOpenMarket = true;
-                                game.lastDice = dice;
-                                game.lastQuantity = quantity;
-                            }
+                            Console.WriteLine("Guns bought");
+
                         }
                         else
                         {

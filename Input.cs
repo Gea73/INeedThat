@@ -39,5 +39,17 @@ namespace INeedThat
             return input;
         }
 
+
+        public static int YesorNoInput()
+        {
+            int choice = ReadInt("1.Yes 2.No");
+            //guarantee right input
+            while (choice < 1 || choice > 2)
+            {
+                Console.WriteLine("Invalid Input");
+                choice = ReadInt("1.Yes 2.No");
+            }
+            return choice;
+        }
     }
 }

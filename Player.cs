@@ -24,7 +24,7 @@ namespace INeedThat
             PlayerID = playerid;
             Cash = 100000;
             PlayerCrew = new List<Crew>();
-            Respect = 0;
+            Respect = 5;
             GunStock = new List<Gun>();
             InPrisonCrew = new List<Crew>();
 
