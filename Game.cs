@@ -11,14 +11,7 @@ namespace INeedThat
     {
         public List<Player> Players { get; private set; }
         public Map GameMap { get; private set; }
-
-
         public int Turn { get; private set; }
-        public bool AlreadyBought = false;
-        public bool AlreadyOpenMarket = false;
-        public bool AlreadyOpenReports = false;
-        public int lastDice = 0;
-        public int lastQuantity = 0;
 
         //method to create the players
         public void CreatePlayers(Game game)
@@ -29,7 +22,7 @@ namespace INeedThat
             //guaranteeing correct input
             while (numPlayers > 5 || numPlayers <= 1)
             {
-                Console.WriteLine("Minimal number of player is 2");
+                Console.WriteLine("Minimal number of player is 2 Max is 5");
                 numPlayers = Input.ReadInt("How many players do you want in the game?(Max:5)");
             }
             bool humanPlayerCreated = false;
@@ -208,7 +201,6 @@ namespace INeedThat
             Console.WriteLine(GameMap);
         }
 
-
         public void Menu(Game game)
         {
             Console.WriteLine("Game Started Welcome Homie");
@@ -216,16 +208,16 @@ namespace INeedThat
             Console.Clear();
             //define if the game will keep looping menu
             bool gameRunning = true;
+            Market market = new Market();
+            CrewManagement crewmanager = new CrewManagement();
             Player actualPlayer = null;
             //look for a human player to define as a real player
+            actualPlayer = Players.FirstOrDefault(p => p.Human);
 
-            foreach (Player player in game.Players)
-            {
-                if (player.Human == true)
-                {
-                    actualPlayer = player;
-                }
-            }
+            
+            //testing rival
+            
+           
 
             while (gameRunning)
             {
@@ -247,22 +239,22 @@ namespace INeedThat
                 switch (choice)
                 {
                     case 0:
-                        game.MoveCrew(game, actualPlayer);
+                        crewmanager.MoveCrew(game, actualPlayer);
                         break;
                     case 1:
-                        game.SelectHood(game, actualPlayer);
+                        SelectHood(game, actualPlayer);
                         break;
                     case 2:
-                        game.SelectCrewMenu(game, actualPlayer);
+                        crewmanager.SelectCrewMenu(game, actualPlayer);
                         break;
                     case 3:
-                        Crew.LieutenantReports(game, actualPlayer);
+                        crewmanager.LieutenantReports(actualPlayer);
                         break;
                     case 4:
-                        Gun.Market(game, actualPlayer);
+                        market.GunMarket(game, actualPlayer);
                         break;
                     case 5:
-                        game.EndTurn(game, actualPlayer);
+                        EndTurn(game, actualPlayer, market,crewmanager);
                         break;
                     case 123:
                         gameRunning = game.Exit(actualPlayer);
@@ -335,140 +327,7 @@ namespace INeedThat
 
         }
 
-        public void MoveCrew(Game game, Player player)
-        {
 
-            Crew selectedCrew = CrewSelection(player);
-
-            Console.WriteLine("Where you want to move?");
-            //if the crew selected dont have position
-            if (selectedCrew.Location == null)
-            {
-                //show all hoods in the game
-                foreach (Hood hood in game.GameMap.MapHoods)
-                {
-                    Console.WriteLine($"{hood.HoodID}.{hood.Name}");
-                }
-
-
-                int moveTo = Input.ReadInt("Type the index of the hood or -1 to exit:");
-
-                if (moveTo == -1)
-                {
-                    Console.WriteLine("Exiting");
-                    Console.ReadKey();
-                }
-                else
-                    //guarante right input
-                    while (moveTo < 0 && moveTo > game.GameMap.MapHoods.Count)
-                    {
-                        Console.WriteLine("Invalid choice.");
-                        moveTo = Input.ReadInt("Type the index of the hood:");
-                    }
-
-                //search in the list and define the location of the movement as moveto id 
-                foreach (Hood hood in game.GameMap.MapHoods)
-                {
-                    if (moveTo == hood.HoodID)
-                    {
-                        selectedCrew.Location = hood;
-
-
-                        Console.WriteLine($"{selectedCrew.Name} moved to {selectedCrew.Location.Name}");
-                        Console.ReadKey();
-
-                    }
-                }
-
-
-            }
-            else
-            {
-                //show only adjacents hoods
-                Console.WriteLine(selectedCrew.Location.HoodID == 31 ? "" : $"Top {selectedCrew.Location.AdjTop.HoodID}:{selectedCrew.Location.AdjTop.Name}");
-                Console.WriteLine(selectedCrew.Location.HoodID == 31 ? "" : $"Bottom {selectedCrew.Location.AdjBot.HoodID}:{selectedCrew.Location.AdjBot.Name}");
-                Console.WriteLine(selectedCrew.Location.HoodID == 31 ? "" : $"Right {selectedCrew.Location.AdjRig.HoodID}:{selectedCrew.Location.AdjRig.Name}");
-                Console.WriteLine(selectedCrew.Location.HoodID == 31 ? "" : $"Left {selectedCrew.Location.AdjLef.HoodID}:{selectedCrew.Location.AdjLef.Name}");
-
-                int moveTo = Input.ReadInt("Type the index of the hood:");
-                //guaranteing right input
-                while (moveTo == 31 || moveTo < 0 || moveTo > game.GameMap.MapHoods.Count())
-                {
-                    Console.WriteLine("Invalid value");
-                    moveTo = Input.ReadInt("Type the index of the hood:");
-                }
-                //check if the hood want to move is valid in adjancency based on id
-                if (moveTo == selectedCrew.Location.AdjTop.HoodID || moveTo == selectedCrew.Location.AdjBot.HoodID || moveTo == selectedCrew.Location.AdjRig.HoodID || moveTo == selectedCrew.Location.AdjLef.HoodID)
-                {
-                    foreach (Hood hood in game.GameMap.MapHoods)
-                    {
-                        if (moveTo == hood.HoodID)
-                        {
-                            selectedCrew.Location = hood;
-                            Console.WriteLine($"{selectedCrew.Name} moved to {selectedCrew.Location.Name}");
-                            Console.ReadKey();
-                        }
-
-                    }
-                }
-                //if the input is aint equal the ids adjacents
-                else
-                {
-                    Console.WriteLine("Invalid index hood");
-                    Console.ReadKey();
-
-                }
-
-            }
-        }
-
-        public void SelectCrewMenu(Game game, Player player)
-        {
-
-
-            Crew selectedCrew = CrewSelection(player);
-
-
-            Console.WriteLine(selectedCrew);
-            Console.WriteLine("1.Move Crew");
-            Console.WriteLine("2.Equip Gun or remove");
-            if (selectedCrew.Lieutenant == false && selectedCrew.Captain == false)
-            {
-                Console.WriteLine("3.Promote");
-            }
-            Console.WriteLine("4.Cancel");
-
-            int option = Input.ReadInt("Type the option");
-            //guarante right input
-            while (option < 1 || option > 4)
-            {
-                Console.WriteLine("Invalid option");
-                option = Input.ReadInt("Type the option");
-            }
-
-            //options
-            switch (option)
-            {
-                case 1:
-                    MoveCrew(game, player);
-                    break;
-                case 2:
-                    selectedCrew.EquipGun(player);
-                    break;
-
-                case 3:
-                    selectedCrew.Promote();
-                    break;
-                case 4:
-                    Console.WriteLine("Exiting");
-                    Console.ReadKey();
-                    break;
-                default:
-                    Console.WriteLine("Invalid Value");
-                    break;
-            }
-
-        }
 
         public void SelectHood(Game game, Player human)
         {
@@ -613,20 +472,21 @@ namespace INeedThat
             return false;
         }
 
-        public void EndTurn(Game game, Player player)
+        public void EndTurn(Game game, Player player, Market market, CrewManagement crewmanager)
         {
-            Crew recruiter = new Crew(null, null, null, 0, 0, 0, 0, -1);
+            
             Console.WriteLine("Turn Ended");
             Turn += 1;
             Console.WriteLine("Turn:" + Turn);
             Police();
             PrisonReleases();
             Console.ReadKey();
-            AlreadyBought = false;
-            AlreadyOpenMarket = false;
-            AlreadyOpenReports = false;
+            DistributeHoodProfits();
+            market.AlreadyBought = false;
+            market.AlreadyOpenMarket = false;
+            crewmanager.AlreadyOpenReports = false;
             Console.Clear();
-            recruiter.RecruitCrew(game, player);
+            crewmanager.RecruitCrew(game, player);
             Console.Clear();
         }
 
@@ -721,44 +581,70 @@ namespace INeedThat
 
         }
 
-      
-
-        
 
 
-        public Crew CrewSelection(Player player)
+        public void DistributeHoodProfits()
         {
-            Crew selectedCrew = null;
+            Console.WriteLine("\n--- Hood Profit Distribution Report ---");
+            bool anyProfitDistributed = false;
 
-            //show the crew based on the list of player crew
-            Console.WriteLine("Crew List:");
-
-            foreach (Crew crew in player.PlayerCrew)
+            foreach (Hood hood in GameMap.MapHoods)
             {
+                // Filter all active crew members that are in this specific hood
+                // Get all active crews from all players
+                var crewsInThisHood = Players.SelectMany(player => player.PlayerCrew).Where(crew => crew.Location?.HoodID == hood.HoodID).ToList();
 
-                Console.WriteLine($"{crew.CrewID}.{crew.Name}");
-
-            }
-
-            int choice = Input.ReadInt("Type the index of the crew member:");
-            //guarante right input
-            while (choice < 0 && choice > player.PlayerCrew.Count)
-            {
-                Console.WriteLine("Invalid choice.");
-                choice = Input.ReadInt("Type the index of the crew member:");
-            }
-            //select the crew based in id
-            foreach (Crew crew in player.PlayerCrew)
-            {
-                if (choice == crew.CrewID)
+                if (!crewsInThisHood.Any())
                 {
-                    selectedCrew = crew;
+                    // Console.WriteLine($"No crews in {hood.Name}. No profit generated."); // Too much spam
+                    continue; // Skip to next hood if no crews are present
+                }
 
+                // Group crews by the player they belong to and sum their hustle
+                // Group by Player affiliation
+                var playerHustleInHood = crewsInThisHood.GroupBy(crew => crew.Aff).Select(group => new
+                {
+                    Player = group.Key,
+                    TotalHustle = group.Sum(c => c.Hustle)
+                })
+                    .ToList();
+
+                int totalHustleInHood = playerHustleInHood.Sum(p => p.TotalHustle);
+
+                // Calculate the total profit generated by this hood
+                // Using Hood.Value as base and total hustle as a multiplier
+                // Adding a constant multiplier to make profits more significant
+                int totalHoodProfit = hood.Value * totalHustleInHood * 120;
+
+                if (totalHoodProfit > 0 && totalHustleInHood > 0)
+                {
+                    anyProfitDistributed = true;
+                    Console.WriteLine($"\nProcessing profits for {hood.Name} (Value: ${hood.Value}, Total Hustle: {totalHustleInHood})");
+
+                    foreach (var entry in playerHustleInHood)
+                    {
+                        double playerShare = (double)entry.TotalHustle / totalHustleInHood * totalHoodProfit;
+                        entry.Player.Cash += (int)Math.Round(playerShare); // Add profit to player's cash
+
+                        Console.WriteLine($"  {entry.Player.Name} earns ${Math.Round(playerShare, 2).ToString("#,0.00")} from {hood.Name} (Hustle: {entry.TotalHustle}).");
+
+                        // Optionally, add heat to crews in this hood for generating profit
+                        foreach (Crew crew in crewsInThisHood.Where(c => c.Aff == entry.Player))
+                        {
+                            crew.Heat += 1; // Small heat increase, max 10
+
+                        }
+                    }
                 }
             }
 
-            return selectedCrew;
+            if (!anyProfitDistributed)
+            {
+                Console.WriteLine("No hoods generated profit this turn.");
+            }
+            Console.ReadKey();
         }
+
     }
 
 }
