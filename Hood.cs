@@ -31,7 +31,14 @@ namespace INeedThat
 
         public override string ToString()
         {
-            return $"{Name} ${Value} TOP:{AdjTop.Name} BOT:{AdjBot.Name} RIG:{AdjRig.Name} LEF:{AdjLef.Name}\n";
+            if (AdjTop == null || AdjRig == null || AdjLef == null || AdjLef == null)
+            {
+                return "Error in hood ajacency";
+            }
+            else
+            {
+                return $"{Name} ${Value} TOP:{AdjTop.Name} BOT:{AdjBot.Name} RIG:{AdjRig.Name} LEF:{AdjLef.Name}\n";
+            }
         }
     }
 }

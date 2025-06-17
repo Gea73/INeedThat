@@ -12,9 +12,7 @@ namespace INeedThat
 
         public Map()
         {
-
             MapHoods = new List<Hood>();
-
         }
         //just to bear a the hood list
 

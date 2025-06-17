@@ -310,6 +310,7 @@ namespace INeedThat
                         }
 
                         break;
+
                     default:
                         Console.WriteLine("Error in the dice");
                         break;
@@ -317,7 +318,5 @@ namespace INeedThat
                 Console.ReadKey();
             }
         }
-
-
     }
 }

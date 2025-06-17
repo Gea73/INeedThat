@@ -16,7 +16,7 @@ namespace INeedThat
         //method to create the players
         public void CreatePlayers(Game game)
         {
-
+            bool humanPlayerCreated = false;
             Players = new List<Player>();
             int numPlayers = Input.ReadInt("How many players do you want in the game?(Max:5)");
             //guaranteeing correct input
@@ -25,13 +25,14 @@ namespace INeedThat
                 Console.WriteLine("Minimal number of player is 2 Max is 5");
                 numPlayers = Input.ReadInt("How many players do you want in the game?(Max:5)");
             }
-            bool humanPlayerCreated = false;
+
             //for to create the numbers of players wanted
             for (int i = 0; i < numPlayers; i++)
             {
 
                 string playerName = Input.ReadString("\nFaction Name:");
                 int ishuman = 2;
+
                 if (humanPlayerCreated == false)
                 {
                     Console.WriteLine("Player is human?");
@@ -40,7 +41,6 @@ namespace INeedThat
                     {
                         humanPlayerCreated = true;
                     }
-
                     //guarante correct input
                 }
 
@@ -214,14 +214,19 @@ namespace INeedThat
             //look for a human player to define as a real player
             actualPlayer = Players.FirstOrDefault(p => p.Human);
 
-            
+
             //testing rival
-            
-           
+
+
 
             while (gameRunning)
             {
-
+                if (actualPlayer.PlayerCrew.Count < 1)
+                {
+                    Console.WriteLine("Your gang is disbanded you lost everyone");
+                    gameRunning = false;
+                    break;
+                }
                 //draw the map of hoods
                 DrawMap(game);
                 //show menu options
@@ -234,6 +239,7 @@ namespace INeedThat
                 Console.WriteLine("3:Lieutenant Reports:");
                 Console.WriteLine("4:Black Market:");
                 Console.WriteLine("5.End Turn:");
+                Console.WriteLine("7.Show the other factions:");
                 Console.WriteLine("123:Exit:");
                 int choice = Input.ReadInt("Type the choice:");
                 switch (choice)
@@ -254,7 +260,10 @@ namespace INeedThat
                         market.GunMarket(game, actualPlayer);
                         break;
                     case 5:
-                        EndTurn(game, actualPlayer, market,crewmanager);
+                        EndTurn(game, actualPlayer, market, crewmanager);
+                        break;
+                    case 7:
+                        ShowOtherFactions(game);
                         break;
                     case 123:
                         gameRunning = game.Exit(actualPlayer);
@@ -347,22 +356,16 @@ namespace INeedThat
 
             //guarantee right input
 
-            while (hoodSelect < 0 && hoodSelect > game.GameMap.MapHoods.Count)
+            while (hoodSelect < GameMap.MapHoods.Min(h => h.HoodID) || hoodSelect > GameMap.MapHoods.Max(h => h.HoodID))
             {
                 Console.WriteLine("Invalid choice.");
                 hoodSelect = Input.ReadInt("Type the index of the hood:");
             }
+
+            hoodSelected = GameMap.MapHoods.FirstOrDefault(h => h.HoodID == hoodSelect);
+            Console.WriteLine($"{hoodSelected.Name} selected");
             //select the hood based on id
-            foreach (Hood hood in game.GameMap.MapHoods)
-            {
-                if (hoodSelect == hood.HoodID)
-                {
-                    hoodSelected = hood;
 
-                    Console.WriteLine($"{hoodSelected.Name} selected");
-
-                }
-            }
 
             //add the crewmembers in that hood on the hoodcrew list based on id location
             foreach (Player player in game.Players)
@@ -474,7 +477,7 @@ namespace INeedThat
 
         public void EndTurn(Game game, Player player, Market market, CrewManagement crewmanager)
         {
-            
+
             Console.WriteLine("Turn Ended");
             Turn += 1;
             Console.WriteLine("Turn:" + Turn);
@@ -496,7 +499,7 @@ namespace INeedThat
             int dice = 0;
             foreach (Player player in Players)
             {
-                foreach (Crew crew in player.PlayerCrew)
+                foreach (Crew crew in player.PlayerCrew.ToList())
                 {
                     if (crew.Heat >= 10)
                     {
@@ -566,7 +569,7 @@ namespace INeedThat
             }
             foreach (Player player in Players)
             {
-                foreach (Crew crew in player.InPrisonCrew)
+                foreach (Crew crew in player.InPrisonCrew.ToList())
                 {
                     if (crew.MonthsInPrison == 0)
                     {
@@ -585,7 +588,7 @@ namespace INeedThat
 
         public void DistributeHoodProfits()
         {
-            Console.WriteLine("\n--- Hood Profit Distribution Report ---");
+            Console.WriteLine("\nHood Profit Distribution:");
             bool anyProfitDistributed = false;
 
             foreach (Hood hood in GameMap.MapHoods)
@@ -594,7 +597,7 @@ namespace INeedThat
                 // Get all active crews from all players
                 var crewsInThisHood = Players.SelectMany(player => player.PlayerCrew).Where(crew => crew.Location?.HoodID == hood.HoodID).ToList();
 
-                if (!crewsInThisHood.Any())
+                if (crewsInThisHood.Count() <= 0)
                 {
                     // Console.WriteLine($"No crews in {hood.Name}. No profit generated."); // Too much spam
                     continue; // Skip to next hood if no crews are present
@@ -606,8 +609,7 @@ namespace INeedThat
                 {
                     Player = group.Key,
                     TotalHustle = group.Sum(c => c.Hustle)
-                })
-                    .ToList();
+                }).ToList();
 
                 int totalHustleInHood = playerHustleInHood.Sum(p => p.TotalHustle);
 
@@ -619,7 +621,7 @@ namespace INeedThat
                 if (totalHoodProfit > 0 && totalHustleInHood > 0)
                 {
                     anyProfitDistributed = true;
-                    Console.WriteLine($"\nProcessing profits for {hood.Name} (Value: ${hood.Value}, Total Hustle: {totalHustleInHood})");
+                    Console.WriteLine($"\nProfits for {hood.Name} (Value: ${hood.Value}, Total Hustle: {totalHustleInHood})");
 
                     foreach (var entry in playerHustleInHood)
                     {
@@ -631,8 +633,10 @@ namespace INeedThat
                         // Optionally, add heat to crews in this hood for generating profit
                         foreach (Crew crew in crewsInThisHood.Where(c => c.Aff == entry.Player))
                         {
-                            crew.Heat += 1; // Small heat increase, max 10
-
+                            if (crew.Heat > 0 && crew.Heat < 5)
+                            {
+                                crew.Heat += 1; // Small heat increase, max 10
+                            }
                         }
                     }
                 }
@@ -645,6 +649,20 @@ namespace INeedThat
             Console.ReadKey();
         }
 
-    }
 
+        private void ShowOtherFactions(Game game)
+        {
+            Console.WriteLine("Rival Factions:");
+            foreach (Player faction in game.Players)
+            {
+                if (faction.Human == false)
+                {
+                    Console.WriteLine($"{faction.PlayerID}.Faction:{faction.Name}");
+                    var captain = faction.PlayerCrew.FirstOrDefault(c => c.Captain == true);
+                    Console.WriteLine($"{captain.CrewID}.Captain:{captain.Name}");
+                }
+            }
+            Console.ReadKey();
+        }
+    }
 }

@@ -52,7 +52,7 @@ namespace INeedThat
                         {
                             foreach (Crew crew in player.PlayerCrew)
                             {
-                                if (crew.Heat > 4)
+                                if (crew.Heat >= 5)
                                 {
                                     crew.Heat -= 5;
                                     Console.Write($"{crew.Name} Heat reduced to {crew.Heat} :");
@@ -73,24 +73,20 @@ namespace INeedThat
 
                         foreach (Crew crew in player.PlayerCrew)
                         {
-                            if (crew.Heat == 0)
+                            if (crew.Heat <= 5)
                             {
                                 RobberyTeam.Add(crew);
                                 Console.WriteLine(crew.Name + " is on the team");
                             }
-                            else if (crew.CrewID == Crew.LastCrewIdUsed(player) - 2 && crew.Heat < 5)
-                            {
-                                RobberyTeam.Add(crew);
-                                Console.WriteLine(crew.Name + "is on the team");
-                            }
-
                         }
+
                         if (RobberyTeam.Count < 1)
                         {
                             Console.WriteLine("Nobody can do this now they are all heated");
                         }
                         else
                         {
+                            Console.WriteLine("Make the robbery?");
                             choice = Input.YesorNoInput();
 
                             if (choice == 1)
@@ -111,6 +107,7 @@ namespace INeedThat
 
                         break;
                     case 3:
+
                         List<Crew> traitorsList = new List<Crew>();
                         if (crewmember.Loyalty > 4)
                         {
@@ -127,9 +124,10 @@ namespace INeedThat
                                 foreach (Crew crew in traitorsList)
                                 {
                                     Console.WriteLine(crew.Name);
-
                                 }
+
                                 choice = Input.YesorNoInput();
+
                                 if (choice == 1)
                                 {
                                     foreach (Crew crew in traitorsList.ToList())
@@ -157,13 +155,9 @@ namespace INeedThat
                         break;
                     case 4:
                         Crew crewToRelease = null;
-                        foreach (Crew crew in player.InPrisonCrew)
-                        {
-                            if (crewToRelease == null && crew.Heat < 7)
-                            {
-                                crewToRelease = crew;
-                            }
-                        }
+
+                        crewToRelease = player.InPrisonCrew.FirstOrDefault(c => c.Heat <= 5);
+
                         if (crewToRelease != null)
                         {
                             Console.WriteLine($"I founded a attorney that can release out {crewToRelease.Name} for a pack");
@@ -185,7 +179,27 @@ namespace INeedThat
                         {
                             Console.WriteLine("I founded a attorney that can clean some registers");
                             {
-                                crewToRelease = CrewSelection(player);
+
+                                var crewWithHeat = player.PlayerCrew.Where(c => c.Heat > 0);
+                                foreach (Crew crew in crewWithHeat)
+                                {
+                                    Console.WriteLine($"{crew.CrewID}.{crew.Name} Heat:{crew.Heat}");
+                                }
+                                choice = Input.ReadInt("Type the index of the crew member:");
+                                //guarante right input
+                                while (choice < crewWithHeat.Min(c => c.CrewID) || choice > crewWithHeat.Max(c => c.CrewID))
+                                {
+                                    Console.WriteLine("Invalid choice.");
+                                    choice = Input.ReadInt("Type the index of the crew member:");
+                                }
+                                crewToRelease = crewWithHeat.FirstOrDefault(c => c.CrewID == choice);
+
+                                if (crewToRelease == null)
+                                {
+                                    Console.WriteLine("Invalid ID choice");
+                                    return;
+                                }
+
                                 if (crewToRelease.Heat > 5)
                                 {
                                     Console.WriteLine($"$15.000 to clean {crewToRelease.Name}");
@@ -226,7 +240,7 @@ namespace INeedThat
                         choice = Input.YesorNoInput();
                         if (choice == 1 && player.Cash >= 3500)
                         {
-                            player.Cash = player.Cash - 3500;
+                            player.Cash -= 3500;
                             int lastGunId = Gun.LastGunIdUsed(player);
                             for (int i = 1; i <= 5; i++)
                             {
@@ -253,6 +267,8 @@ namespace INeedThat
                                 crew.Loyalty += 1;
                             }
                             Console.WriteLine("Loyalty increased for all members");
+                            player.Cash -= 20000;
+
                         }
                         else
                         {
@@ -276,6 +292,7 @@ namespace INeedThat
                                 player.GunStock.Add(gun);
                             }
                             Console.WriteLine("Guns bought");
+                            player.Cash -= 15000;
                         }
                         else
                         {
@@ -285,16 +302,17 @@ namespace INeedThat
 
                         break;
                     case 8:
-                        Console.WriteLine("Boss maybe we can send some gifs to make our guys behind bars more loyal");
+                        Console.WriteLine("Boss maybe we can send some gifts to make our homies behind bars more loyal");
                         Console.Write("$15.000 ");
                         choice = Input.YesorNoInput();
                         if (choice == 1 && player.Cash >= 15000)
                         {
-                            player.Cash -= 15000;
+
                             foreach (Crew crew in player.InPrisonCrew)
                             {
                                 crew.Loyalty += 1;
                             }
+                            player.Cash -= 15000;
                         }
                         else
                         {
@@ -306,7 +324,15 @@ namespace INeedThat
                     case 9:
                         Console.WriteLine("Sup boss i found a guy wanting to buy some guns");
                         Console.Write("He is offering $1.000 for low caliber guns and $5.000 ");
+                        Console.WriteLine("Gun Stock:");
+
+                        foreach (Gun gun in player.GunStock)
+                        {
+                            Console.WriteLine($"{gun.Name}");
+                        }
+
                         choice = Input.YesorNoInput();
+
                         if (choice == 1 && player.GunStock.Count > 0)
                         {
                             int gunSellProfit = 0;
@@ -315,34 +341,30 @@ namespace INeedThat
 
                                 if (gun.Firepower >= 7)
                                 {
-                                    player.Cash += 5000;
                                     player.GunStock.Remove(gun);
                                     gunSellProfit += 5000;
                                 }
                                 else
                                 {
-                                    player.Cash += 1000;
                                     player.GunStock.Remove(gun);
                                     gunSellProfit += 1000;
                                 }
                             }
                             Console.WriteLine("We earned a stack:" + gunSellProfit);
+                            player.Cash += gunSellProfit;
                         }
                         else
                         {
                             Console.WriteLine("Nothing done");
                         }
 
-
                         break;
                     case 10:
                         int averageLoyalty = 0;
-                        foreach (Crew crew in player.PlayerCrew)
-                        {
-                            averageLoyalty += crew.Loyalty;
 
-                        }
-                        averageLoyalty = averageLoyalty / player.PlayerCrew.Count;
+                        averageLoyalty += player.PlayerCrew.Sum(c => c.Loyalty);
+
+                        averageLoyalty = averageLoyalty / Math.Max(1,player.PlayerCrew.Count);
 
                         if (averageLoyalty > 5)
                         {
@@ -366,7 +388,7 @@ namespace INeedThat
             //if the crew have a gun
             if (crewmember.GunEquip != null)
             {
-                Console.WriteLine($"Gun equipped{crewmember.GunEquip.Name}");
+                Console.WriteLine($"Gun equipped:{crewmember.GunEquip.Name}");
                 Console.WriteLine("Remove it?");
                 int choice = Input.YesorNoInput();
 
@@ -435,7 +457,6 @@ namespace INeedThat
             //check if is already promoted
             if (crewmember.Captain || crewmember.Lieutenant)
             {
-
                 Console.WriteLine("This crew member is already a higher rank");
             }
             //is a soldier
@@ -470,7 +491,7 @@ namespace INeedThat
             Crew crew2 = new Crew(NameRandom(), player, null, AttributeRandom(), AttributeRandom(), AttributeRandom(), 5, lastCrewID + 2);
             Crew crew3 = new Crew(NameRandom(), player, null, AttributeRandom(), AttributeRandom(), AttributeRandom(), 5, lastCrewID + 3);
 
-            if (player.Respect <= 0 || player.Cash <= 3000)
+            if (player.Respect <= 0 || player.Cash < 3000)
             {
                 Console.WriteLine("Nobody want to join our gang");
             }
@@ -569,13 +590,13 @@ namespace INeedThat
                     name2 = GetRandom(names, random);
                     newName = $"{name1} {name2}";
                     break;
-                case 2: // nickname + nickname
-                    name1 = GetRandom(nicknames, random);
+                case 2: // name + nickname
+                    name1 = GetRandom(names, random);
                     name2 = GetRandom(nicknames, random);
                     newName = $"{name1} {name2}";
                     break;
                 default:
-                    Console.WriteLine("erro na lista");
+                    Console.WriteLine("error on list name");
                     break;
             }
             return newName;
@@ -587,14 +608,18 @@ namespace INeedThat
         private int AttributeRandom()
         {
             int att = 0;
-            att = random.Next(1, 11);
+            att = random.Next(1, 10 + 1);
             return att;
         }
         public void MoveCrew(Game game, Player player)
         {
 
             Crew selectedCrew = CrewSelection(player);
-
+            if (selectedCrew == null)
+            {
+                Console.WriteLine("Invalid ID choice");
+                return;
+            }
             Console.WriteLine("Where you want to move?");
             //if the crew selected dont have position
             if (selectedCrew.Location == null)
@@ -612,14 +637,16 @@ namespace INeedThat
                 {
                     Console.WriteLine("Exiting");
                     Console.ReadKey();
+                    return;
                 }
                 else
                     //guarante right input
-                    while (moveTo < 0 && moveTo > game.GameMap.MapHoods.Count)
+                    while (moveTo < game.GameMap.MapHoods.Min(c => c.HoodID) || moveTo > game.GameMap.MapHoods.Max(c => c.HoodID))
                     {
                         Console.WriteLine("Invalid choice.");
                         moveTo = Input.ReadInt("Type the index of the hood:");
                     }
+
 
                 //search in the list and define the location of the movement as moveto id 
                 foreach (Hood hood in game.GameMap.MapHoods)
@@ -647,7 +674,7 @@ namespace INeedThat
 
                 int moveTo = Input.ReadInt("Type the index of the hood:");
                 //guaranteing right input
-                while (moveTo == 31 || moveTo < 0 || moveTo > game.GameMap.MapHoods.Count())
+                while (moveTo == 31 || moveTo < game.GameMap.MapHoods.Min(h => h.HoodID) || moveTo > game.GameMap.MapHoods.Max(h => h.HoodID))
                 {
                     Console.WriteLine("Invalid value");
                     moveTo = Input.ReadInt("Type the index of the hood:");
@@ -655,16 +682,12 @@ namespace INeedThat
                 //check if the hood want to move is valid in adjancency based on id
                 if (moveTo == selectedCrew.Location.AdjTop.HoodID || moveTo == selectedCrew.Location.AdjBot.HoodID || moveTo == selectedCrew.Location.AdjRig.HoodID || moveTo == selectedCrew.Location.AdjLef.HoodID)
                 {
-                    foreach (Hood hood in game.GameMap.MapHoods)
-                    {
-                        if (moveTo == hood.HoodID)
-                        {
-                            selectedCrew.Location = hood;
-                            Console.WriteLine($"{selectedCrew.Name} moved to {selectedCrew.Location.Name}");
-                            Console.ReadKey();
-                        }
 
-                    }
+
+                    selectedCrew.Location = game.GameMap.MapHoods.FirstOrDefault(h => h.HoodID == moveTo);
+                    Console.WriteLine($"{selectedCrew.Name} moved to {selectedCrew.Location.Name}");
+                    Console.ReadKey();
+
                 }
                 //if the input is aint equal the ids adjacents
                 else
@@ -682,7 +705,11 @@ namespace INeedThat
 
 
             Crew selectedCrew = CrewSelection(player);
-
+            if (selectedCrew == null)
+            {
+                Console.WriteLine("Invalid ID choice");
+                return;
+            }
 
             Console.WriteLine(selectedCrew);
             Console.WriteLine("1.Move Crew");
@@ -740,20 +767,14 @@ namespace INeedThat
 
             int choice = Input.ReadInt("Type the index of the crew member:");
             //guarante right input
-            while (choice < 0 && choice > player.PlayerCrew.Count)
+            while (choice < player.PlayerCrew.Min(c => c.CrewID) || choice > player.PlayerCrew.Max(c => c.CrewID))
             {
                 Console.WriteLine("Invalid choice.");
                 choice = Input.ReadInt("Type the index of the crew member:");
             }
-            //select the crew based in id
-            foreach (Crew crew in player.PlayerCrew)
-            {
-                if (choice == crew.CrewID)
-                {
-                    selectedCrew = crew;
 
-                }
-            }
+            selectedCrew = player.PlayerCrew.FirstOrDefault(c => c.CrewID == choice);
+            //select the crew based in id
 
             return selectedCrew;
         }

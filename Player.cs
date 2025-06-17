@@ -37,11 +37,13 @@ namespace INeedThat
             //defining the strings a list of to strings of crew and guns
             foreach (Crew crew in PlayerCrew)
             {
-                playercrew += crew.ToString();
+                playercrew += crew.Name;
+                playercrew += ",";
             }
             foreach (Gun gun in GunStock)
             {
-                gunstock += gun.ToString();
+                gunstock += gun.Name;
+                gunstock += ",";
             }
 
 
