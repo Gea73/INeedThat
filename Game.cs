@@ -37,9 +37,10 @@ namespace INeedThat
                 {
                     Console.WriteLine("Player is human?");
                     ishuman = Input.YesorNoInput();
-                    if (ishuman == 1)
+                    if (ishuman == 1 || i == numPlayers - 1)
                     {
                         humanPlayerCreated = true;
+                        ishuman = 1;
                     }
                     //guarante correct input
                 }
@@ -87,120 +88,123 @@ namespace INeedThat
                 Console.WriteLine("Invalid city");
                 choice = Input.ReadInt("1:Caxias do Sul 2:New York 3:Chicago");
             }
-
-            switch (choice)
+            while (map.MapHoods.Count == 0)
             {
-                case 1:
-                    //create all the hoods
-                    Hood priMa = new Hood("1ºMaio", 4, 0);
-                    Hood priJa = new Hood("1ºMaio Jd America", 3, 1);
-                    Hood Burg = new Hood("Burgo", 3, 2);
-                    Hood Anten = new Hood("Antena", 4, 3);
-                    Hood Burac = new Hood("Buraco", 3, 4);
-                    Hood Fatim = new Hood("Fatima Baixo", 3, 5);
-                    Hood Pione = new Hood("Pioneiro", 2, 6);
-                    Hood Cent = new Hood("Centenario", 2, 7);
-                    Hood Cinq = new Hood("Cinquentenário", 4, 8);
-                    Hood Reol = new Hood("Reolon", 3, 9);
-                    Hood Cruze = new Hood("Cruzeiro", 2, 10);
-                    Hood Pedr = new Hood("Pedreira", 2, 11);
-                    Hood Pla = new Hood("Planalto", 3, 12);
-                    Hood Vict = new Hood("São Victor", 2, 13);
-                    Hood Chap = new Hood("Chapa", 3, 14);
-                    Hood Charq = new Hood("Charqueadas", 1, 15);
-                    Hood Mont = new Hood("Monte Carmelo", 2, 16);
-                    Hood Diam = new Hood("Diamantino", 3, 17);
-                    Hood Roci = new Hood("Rocinha", 3, 18);
-                    Hood Pres = new Hood("Presidente Vargas", 1, 19);
-                    Hood Camp = new Hood("Campos da Serra", 2, 20);
-                    Hood StFe = new Hood("Santa Fé", 4, 21);
-                    Hood Cany = new Hood("Canyon", 3, 22);
-                    Hood Bel = new Hood("Belo Horizonte", 2, 23);
-                    Hood Ipe = new Hood("Vila Ipê", 3, 24);
-                    Hood Ser = new Hood("Serrano", 2, 25);
-                    Hood Ira = new Hood("Jardim Iracema", 1, 26);
-                    Hood Fil = new Hood("Filomena", 2, 27);
-                    Hood Cast = new Hood("Castelo", 2, 28);
-                    Hood Sec = new Hood("Seculo XX", 2, 29);
-                    Hood Des = new Hood("Desvio Rizzo", 1, 30);
-                    Hood Urb = new Hood("Região Urbana", 0, 31);
+                switch (choice)
+                {
+                    case 1:
+                        //create all the hoods
+                        Hood priMa = new Hood("1ºMaio", 4, 0);
+                        Hood priJa = new Hood("1ºMaio Jd America", 3, 1);
+                        Hood Burg = new Hood("Burgo", 3, 2);
+                        Hood Anten = new Hood("Antena", 4, 3);
+                        Hood Burac = new Hood("Buraco", 3, 4);
+                        Hood Fatim = new Hood("Fatima Baixo", 3, 5);
+                        Hood Pione = new Hood("Pioneiro", 2, 6);
+                        Hood Cent = new Hood("Centenario", 2, 7);
+                        Hood Cinq = new Hood("Cinquentenário", 4, 8);
+                        Hood Reol = new Hood("Reolon", 3, 9);
+                        Hood Cruze = new Hood("Cruzeiro", 2, 10);
+                        Hood Pedr = new Hood("Pedreira", 2, 11);
+                        Hood Pla = new Hood("Planalto", 3, 12);
+                        Hood Vict = new Hood("São Victor", 2, 13);
+                        Hood Chap = new Hood("Chapa", 3, 14);
+                        Hood Charq = new Hood("Charqueadas", 1, 15);
+                        Hood Mont = new Hood("Monte Carmelo", 2, 16);
+                        Hood Diam = new Hood("Diamantino", 3, 17);
+                        Hood Roci = new Hood("Rocinha", 3, 18);
+                        Hood Pres = new Hood("Presidente Vargas", 1, 19);
+                        Hood Camp = new Hood("Campos da Serra", 2, 20);
+                        Hood StFe = new Hood("Santa Fé", 4, 21);
+                        Hood Cany = new Hood("Canyon", 3, 22);
+                        Hood Bel = new Hood("Belo Horizonte", 2, 23);
+                        Hood Ipe = new Hood("Vila Ipê", 3, 24);
+                        Hood Ser = new Hood("Serrano", 2, 25);
+                        Hood Ira = new Hood("Jardim Iracema", 1, 26);
+                        Hood Fil = new Hood("Filomena", 2, 27);
+                        Hood Cast = new Hood("Castelo", 2, 28);
+                        Hood Sec = new Hood("Seculo XX", 2, 29);
+                        Hood Des = new Hood("Desvio Rizzo", 1, 30);
+                        Hood Urb = new Hood("Região Urbana", 0, 31);
 
-                    //define the adjacences of each hood
-                    //prima prija
-                    priMa.AdjTop = Fatim; priJa.AdjTop = Fatim;
-                    priMa.AdjBot = Urb; priJa.AdjBot = Urb;
-                    priMa.AdjRig = priJa; priJa.AdjRig = Burg;
-                    priMa.AdjLef = Urb; priJa.AdjLef = priMa;
-                    //burg anten burac
-                    Burg.AdjTop = priJa; Anten.AdjTop = Burg; Burac.AdjTop = Anten;
-                    Burg.AdjBot = Anten; Anten.AdjBot = Burac; Burac.AdjBot = Urb;
-                    Burg.AdjRig = Pres; Anten.AdjRig = Burg; Burac.AdjRig = Anten;
-                    Burg.AdjLef = priJa; Anten.AdjLef = Burg; Burac.AdjLef = Anten;
-                    //fatim pione cent
-                    Fatim.AdjTop = Cent; Pione.AdjTop = Cent; Cent.AdjTop = StFe;
-                    Fatim.AdjBot = priMa; Pione.AdjBot = Urb; Cent.AdjBot = Fatim;
-                    Fatim.AdjRig = Sec; Pione.AdjRig = Fatim; Cent.AdjRig = Sec;
-                    Fatim.AdjLef = Pione; Pione.AdjLef = Urb; Cent.AdjLef = Pione;
-                    //stfe cany ipe bel
-                    StFe.AdjTop = Cany; Cany.AdjTop = Urb; Ipe.AdjTop = Cany; Bel.AdjTop = Cany;
-                    StFe.AdjBot = Cent; Cany.AdjBot = StFe; Ipe.AdjBot = Cent; Bel.AdjBot = Cent;
-                    StFe.AdjRig = Bel; Cany.AdjRig = Ser; Ipe.AdjRig = StFe; Bel.AdjRig = Ser;
-                    StFe.AdjLef = Ipe; Cany.AdjLef = Ipe; Ipe.AdjLef = Urb; Bel.AdjLef = StFe;
-                    // ser ira fil cast sec
-                    Ser.AdjTop = Ira; Ira.AdjTop = Urb; Fil.AdjTop = Urb; Cast.AdjTop = Ser; Sec.AdjTop = Ser;
-                    Ser.AdjBot = Sec; Ira.AdjBot = Ser; Fil.AdjBot = Ser; Cast.AdjBot = Diam; Sec.AdjBot = Urb;
-                    Ser.AdjRig = Cast; Ira.AdjRig = Urb; Fil.AdjRig = Ira; Cast.AdjRig = Urb; Sec.AdjRig = Cast;
-                    Ser.AdjLef = Fil; Ira.AdjLef = Fil; Fil.AdjLef = Urb; Cast.AdjLef = Sec; Sec.AdjLef = Fatim;
-                    // diam cap roci pres
-                    Diam.AdjTop = Cast; Camp.AdjTop = Cast; Roci.AdjTop = Diam; Pres.AdjTop = Diam;
-                    Diam.AdjBot = Roci; Camp.AdjBot = Roci; Roci.AdjBot = Cruze; Pres.AdjBot = Cruze;
-                    Diam.AdjRig = Camp; Camp.AdjRig = Urb; Roci.AdjRig = Camp; Pres.AdjRig = Roci;
-                    Diam.AdjLef = Pres; Camp.AdjLef = Diam; Roci.AdjLef = Pres; Pres.AdjLef = Burg;
-                    // plan vict chap
-                    Pla.AdjTop = Urb; Vict.AdjTop = Pla; Chap.AdjTop = Pla;
-                    Pla.AdjBot = Vict; Vict.AdjBot = Mont; Chap.AdjBot = Vict;
-                    Pla.AdjRig = Cruze; Vict.AdjRig = Urb; Chap.AdjRig = Pla;
-                    Pla.AdjLef = Chap; Vict.AdjLef = Chap; Chap.AdjLef = Urb;
-                    // mont des charq reol
-                    Mont.AdjTop = Vict; Des.AdjTop = Charq; Charq.AdjTop = Cinq; Reol.AdjTop = Urb;
-                    Mont.AdjBot = Urb; Des.AdjBot = Urb; Charq.AdjBot = Des; Reol.AdjBot = Des;
-                    Mont.AdjRig = Vict; Des.AdjRig = Mont; Charq.AdjRig = Urb; Reol.AdjRig = Cinq;
-                    Mont.AdjLef = Des; Des.AdjLef = Reol; Charq.AdjLef = Des; Reol.AdjLef = Urb;
-                    // cinq cruze pedr
-                    Cinq.AdjTop = Urb; Cruze.AdjTop = Roci; Pedr.AdjTop = Urb;
-                    Cinq.AdjBot = Charq; Cruze.AdjBot = Pla; Pedr.AdjBot = Urb;
-                    Cinq.AdjLef = Reol; Cruze.AdjRig = Pedr; Pedr.AdjRig = Urb;
-                    Cinq.AdjRig = Urb; Cruze.AdjLef = Pres; Pedr.AdjLef = Cruze;
+                        //define the adjacences of each hood
+                        //prima prija
+                        priMa.AdjTop = Fatim; priJa.AdjTop = Fatim;
+                        priMa.AdjBot = Urb; priJa.AdjBot = Urb;
+                        priMa.AdjRig = priJa; priJa.AdjRig = Burg;
+                        priMa.AdjLef = Urb; priJa.AdjLef = priMa;
+                        //burg anten burac
+                        Burg.AdjTop = priJa; Anten.AdjTop = Burg; Burac.AdjTop = Anten;
+                        Burg.AdjBot = Anten; Anten.AdjBot = Burac; Burac.AdjBot = Urb;
+                        Burg.AdjRig = Pres; Anten.AdjRig = Burg; Burac.AdjRig = Anten;
+                        Burg.AdjLef = priJa; Anten.AdjLef = Burg; Burac.AdjLef = Anten;
+                        //fatim pione cent
+                        Fatim.AdjTop = Cent; Pione.AdjTop = Cent; Cent.AdjTop = StFe;
+                        Fatim.AdjBot = priMa; Pione.AdjBot = Urb; Cent.AdjBot = Fatim;
+                        Fatim.AdjRig = Sec; Pione.AdjRig = Fatim; Cent.AdjRig = Sec;
+                        Fatim.AdjLef = Pione; Pione.AdjLef = Urb; Cent.AdjLef = Pione;
+                        //stfe cany ipe bel
+                        StFe.AdjTop = Cany; Cany.AdjTop = Urb; Ipe.AdjTop = Cany; Bel.AdjTop = Cany;
+                        StFe.AdjBot = Cent; Cany.AdjBot = StFe; Ipe.AdjBot = Cent; Bel.AdjBot = Cent;
+                        StFe.AdjRig = Bel; Cany.AdjRig = Ser; Ipe.AdjRig = StFe; Bel.AdjRig = Ser;
+                        StFe.AdjLef = Ipe; Cany.AdjLef = Ipe; Ipe.AdjLef = Urb; Bel.AdjLef = StFe;
+                        // ser ira fil cast sec
+                        Ser.AdjTop = Ira; Ira.AdjTop = Urb; Fil.AdjTop = Urb; Cast.AdjTop = Ser; Sec.AdjTop = Ser;
+                        Ser.AdjBot = Sec; Ira.AdjBot = Ser; Fil.AdjBot = Ser; Cast.AdjBot = Diam; Sec.AdjBot = Urb;
+                        Ser.AdjRig = Cast; Ira.AdjRig = Urb; Fil.AdjRig = Ira; Cast.AdjRig = Urb; Sec.AdjRig = Cast;
+                        Ser.AdjLef = Fil; Ira.AdjLef = Fil; Fil.AdjLef = Urb; Cast.AdjLef = Sec; Sec.AdjLef = Fatim;
+                        // diam cap roci pres
+                        Diam.AdjTop = Cast; Camp.AdjTop = Cast; Roci.AdjTop = Diam; Pres.AdjTop = Diam;
+                        Diam.AdjBot = Roci; Camp.AdjBot = Roci; Roci.AdjBot = Cruze; Pres.AdjBot = Cruze;
+                        Diam.AdjRig = Camp; Camp.AdjRig = Urb; Roci.AdjRig = Camp; Pres.AdjRig = Roci;
+                        Diam.AdjLef = Pres; Camp.AdjLef = Diam; Roci.AdjLef = Pres; Pres.AdjLef = Burg;
+                        // plan vict chap
+                        Pla.AdjTop = Urb; Vict.AdjTop = Pla; Chap.AdjTop = Pla;
+                        Pla.AdjBot = Vict; Vict.AdjBot = Mont; Chap.AdjBot = Vict;
+                        Pla.AdjRig = Cruze; Vict.AdjRig = Urb; Chap.AdjRig = Pla;
+                        Pla.AdjLef = Chap; Vict.AdjLef = Chap; Chap.AdjLef = Urb;
+                        // mont des charq reol
+                        Mont.AdjTop = Vict; Des.AdjTop = Charq; Charq.AdjTop = Cinq; Reol.AdjTop = Urb;
+                        Mont.AdjBot = Urb; Des.AdjBot = Urb; Charq.AdjBot = Des; Reol.AdjBot = Des;
+                        Mont.AdjRig = Vict; Des.AdjRig = Mont; Charq.AdjRig = Urb; Reol.AdjRig = Cinq;
+                        Mont.AdjLef = Des; Des.AdjLef = Reol; Charq.AdjLef = Des; Reol.AdjLef = Urb;
+                        // cinq cruze pedr
+                        Cinq.AdjTop = Urb; Cruze.AdjTop = Roci; Pedr.AdjTop = Urb;
+                        Cinq.AdjBot = Charq; Cruze.AdjBot = Pla; Pedr.AdjBot = Urb;
+                        Cinq.AdjLef = Reol; Cruze.AdjRig = Pedr; Pedr.AdjRig = Urb;
+                        Cinq.AdjRig = Urb; Cruze.AdjLef = Pres; Pedr.AdjLef = Cruze;
 
-                    //add hoods to the the list of hoods in the game map
-                    map.MapHoods.Add(priMa); map.MapHoods.Add(priJa);
-                    map.MapHoods.Add(Burg); map.MapHoods.Add(Anten); map.MapHoods.Add(Burac);
-                    map.MapHoods.Add(Fatim); map.MapHoods.Add(Pione); map.MapHoods.Add(Cent);
-                    map.MapHoods.Add(Cany); map.MapHoods.Add(StFe); map.MapHoods.Add(Ipe); map.MapHoods.Add(Bel);
-                    map.MapHoods.Add(Ser); map.MapHoods.Add(Ira); map.MapHoods.Add(Fil); map.MapHoods.Add(Cast);
-                    map.MapHoods.Add(Diam); map.MapHoods.Add(Camp); map.MapHoods.Add(Roci); map.MapHoods.Add(Pres);
-                    map.MapHoods.Add(Pla); map.MapHoods.Add(Vict); map.MapHoods.Add(Chap);
-                    map.MapHoods.Add(Mont); map.MapHoods.Add(Des); map.MapHoods.Add(Charq); map.MapHoods.Add(Reol);
-                    map.MapHoods.Add(Cinq); map.MapHoods.Add(Sec); map.MapHoods.Add(Cruze); map.MapHoods.Add(Pedr);
+                        //add hoods to the the list of hoods in the game map
+                        map.MapHoods.Add(priMa); map.MapHoods.Add(priJa);
+                        map.MapHoods.Add(Burg); map.MapHoods.Add(Anten); map.MapHoods.Add(Burac);
+                        map.MapHoods.Add(Fatim); map.MapHoods.Add(Pione); map.MapHoods.Add(Cent);
+                        map.MapHoods.Add(Cany); map.MapHoods.Add(StFe); map.MapHoods.Add(Ipe); map.MapHoods.Add(Bel);
+                        map.MapHoods.Add(Ser); map.MapHoods.Add(Ira); map.MapHoods.Add(Fil); map.MapHoods.Add(Cast);
+                        map.MapHoods.Add(Diam); map.MapHoods.Add(Camp); map.MapHoods.Add(Roci); map.MapHoods.Add(Pres);
+                        map.MapHoods.Add(Pla); map.MapHoods.Add(Vict); map.MapHoods.Add(Chap);
+                        map.MapHoods.Add(Mont); map.MapHoods.Add(Des); map.MapHoods.Add(Charq); map.MapHoods.Add(Reol);
+                        map.MapHoods.Add(Cinq); map.MapHoods.Add(Sec); map.MapHoods.Add(Cruze); map.MapHoods.Add(Pedr);
 
-                    break;
+                        break;
 
-                case 2:
-                    Console.WriteLine("Not avaliable");
-                    break;
-                case 3:
-                    Console.WriteLine("Not avaliable");
-                    break;
-                default:
-                    Console.WriteLine("Wrong Input");
-                    break;
+                    case 2:
+                        Console.WriteLine("Not avaliable");
+                        choice = 1;
+                        break;
+                    case 3:
+                        Console.WriteLine("Not avaliable");
+                        choice = 1;
+                        break;
+                    default:
+                        Console.WriteLine("Wrong Input");
+                        break;
 
+                }
+                //define the map created as the gamemap
+                GameMap = map;
+                Console.WriteLine(GameMap);
             }
-            //define the map created as the gamemap
-            GameMap = map;
-            Console.WriteLine(GameMap);
         }
-
         public void Menu(Game game)
         {
             Console.WriteLine("Game Started Welcome Homie");
@@ -491,6 +495,14 @@ namespace INeedThat
             Console.Clear();
             crewmanager.RecruitCrew(game, player);
             Console.Clear();
+            foreach (Player faction in game.Players)
+            {
+                foreach (Crew crew in faction.PlayerCrew)
+                {
+                    crew.AlreadyMovedThisTurn = false;
+                }
+            }
+
         }
 
         private void Police()

@@ -32,7 +32,8 @@ namespace INeedThat
         public bool Lieutenant { get; set; }
         public bool Captain { get; set; }
         public int MonthsInPrison { get; set; }
-       
+
+        public bool AlreadyMovedThisTurn = false;
         public Crew(string name, Player aff, Gun gunEquip, int brutality, int hustle, int snoop, int loyalty, int crewid)
         {
             Name = name;
@@ -83,7 +84,7 @@ namespace INeedThat
             return $"{rank}{Name} Aff:{Aff.Name} Gun:{gun} BRU:{Brutality} HUS:{Hustle} SNO:{Snoop} LOY:{Loyalty} LOC:{location} HEAT:{Heat}\n";
 
         }
-      
+
         public static int LastCrewIdUsed(Player player)
         {
             int lastUsed = 0;
@@ -96,6 +97,6 @@ namespace INeedThat
             }
             return lastUsed;
         }
-      
+
     }
 }

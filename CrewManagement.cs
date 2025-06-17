@@ -364,7 +364,7 @@ namespace INeedThat
 
                         averageLoyalty += player.PlayerCrew.Sum(c => c.Loyalty);
 
-                        averageLoyalty = averageLoyalty / Math.Max(1,player.PlayerCrew.Count);
+                        averageLoyalty = averageLoyalty / Math.Max(1, player.PlayerCrew.Count);
 
                         if (averageLoyalty > 5)
                         {
@@ -615,15 +615,23 @@ namespace INeedThat
         {
 
             Crew selectedCrew = CrewSelection(player);
-            if (selectedCrew == null)
+            if (selectedCrew.AlreadyMovedThisTurn)
             {
-                Console.WriteLine("Invalid ID choice");
+                Console.WriteLine("Crew member already moved this turn");
+                Console.ReadKey();
                 return;
             }
-            Console.WriteLine("Where you want to move?");
-            //if the crew selected dont have position
-            if (selectedCrew.Location == null)
+            else if (selectedCrew == null)
             {
+                Console.WriteLine("Invalid ID choice");
+                Console.ReadKey();
+                return;
+            }
+
+            //if the crew selected dont have position
+            else if (selectedCrew.Location == null)
+            {
+                Console.WriteLine("Where you want to move?");
                 //show all hoods in the game
                 foreach (Hood hood in game.GameMap.MapHoods)
                 {
@@ -657,6 +665,7 @@ namespace INeedThat
 
 
                         Console.WriteLine($"{selectedCrew.Name} moved to {selectedCrew.Location.Name}");
+                        selectedCrew.AlreadyMovedThisTurn = true;
                         Console.ReadKey();
 
                     }
@@ -686,6 +695,7 @@ namespace INeedThat
 
                     selectedCrew.Location = game.GameMap.MapHoods.FirstOrDefault(h => h.HoodID == moveTo);
                     Console.WriteLine($"{selectedCrew.Name} moved to {selectedCrew.Location.Name}");
+                    selectedCrew.AlreadyMovedThisTurn = true;
                     Console.ReadKey();
 
                 }
