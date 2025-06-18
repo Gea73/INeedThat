@@ -17,6 +17,8 @@ namespace INeedThat
         public List<Gun> GunStock { get; set; }
         public List<Crew> InPrisonCrew { get; set; }
 
+        public List<Crew> InHospitalCrew { get; set; }
+        Random random = new Random();
         public Player(string name, int playerid, bool human)
         {
             Name = name;
@@ -27,6 +29,7 @@ namespace INeedThat
             Respect = 5;
             GunStock = new List<Gun>();
             InPrisonCrew = new List<Crew>();
+            InHospitalCrew = new List<Crew>();
 
         }
 
@@ -50,6 +53,32 @@ namespace INeedThat
             return $"Name:{Name} Cash:{Cash} Respect:{Respect} CrewMembers:{playercrew} GunStock:{gunstock}";
 
         }
+
+
+        public void EnemyAiPlacement(Game game)
+        {
+            List<Player> EnemyAis = game.Players.Where(p => p.Human == false).ToList();
+
+            foreach (Player enemy in EnemyAis)
+            {
+                int IdInitialPlace = random.Next(game.GameMap.MapHoods.Max(h => h.HoodID));
+                while (EnemyAis.SelectMany(p => p.PlayerCrew).Where(c => c.Location != null).Any(c => c.Location.HoodID == IdInitialPlace))
+                {
+                    IdInitialPlace = random.Next(game.GameMap.MapHoods.Max(h => h.HoodID));
+                }
+                Hood hood = game.GameMap.MapHoods.FirstOrDefault(h => h.HoodID == IdInitialPlace);
+                Crew captain = enemy.PlayerCrew.FirstOrDefault(c => c.Captain == true);
+                captain.Location = hood;
+                Console.WriteLine($"{enemy.Name} started on {hood.Name} with captain {captain.Name}");
+            }
+            Console.ReadKey();
+        }
+
+        public void EnemyAiTurn()
+        {
+
+        }
+
 
     }
 }

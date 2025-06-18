@@ -32,6 +32,7 @@ namespace INeedThat
         public bool Lieutenant { get; set; }
         public bool Captain { get; set; }
         public int MonthsInPrison { get; set; }
+        public int MonthsWounded { get; set; }
 
         public bool AlreadyMovedThisTurn = false;
         public Crew(string name, Player aff, Gun gunEquip, int brutality, int hustle, int snoop, int loyalty, int crewid)

@@ -710,6 +710,118 @@ namespace INeedThat
             }
         }
 
+        public void Raid(Game game, Player player)
+        {
+            Combat combat = new Combat();
+            Crew selectedCrew = CrewSelection(player);
+
+            if (selectedCrew.Location != null)
+            {
+                Console.WriteLine("Raid actual hood?");
+                int raidActual = Input.YesorNoInput();
+                if (raidActual == 1)
+                {
+
+                    combat.StartCombat(game, selectedCrew.Location, player);
+                    return;
+                }
+            }
+
+
+            if (selectedCrew.AlreadyMovedThisTurn)
+            {
+                Console.WriteLine("Crew member already moved this turn");
+                Console.ReadKey();
+                return;
+            }
+            else if (selectedCrew == null)
+            {
+                Console.WriteLine("Invalid ID choice");
+                Console.ReadKey();
+                return;
+            }
+
+            //if the crew selected dont have position
+            else if (selectedCrew.Location == null)
+            {
+                Console.WriteLine("Where you want to raid?");
+                //show all hoods in the game
+                foreach (Hood hood in game.GameMap.MapHoods)
+                {
+                    Console.WriteLine($"{hood.HoodID}.{hood.Name}");
+                }
+
+
+                int raid = Input.ReadInt("Type the index of the hood or -1 to exit:");
+
+                if (raid == -1)
+                {
+                    Console.WriteLine("Exiting");
+                    Console.ReadKey();
+                    return;
+                }
+                else
+                    //guarante right input
+                    while (raid < game.GameMap.MapHoods.Min(c => c.HoodID) || raid > game.GameMap.MapHoods.Max(c => c.HoodID))
+                    {
+                        Console.WriteLine("Invalid choice.");
+                        raid = Input.ReadInt("Type the index of the hood:");
+                    }
+
+
+                //search in the list and define the location of the movement as moveto id 
+                foreach (Hood hood in game.GameMap.MapHoods)
+                {
+                    if (raid == hood.HoodID)
+                    {
+
+                        selectedCrew.Location = hood;
+                        combat.StartCombat(game, hood, player);
+
+                        selectedCrew.AlreadyMovedThisTurn = true;
+
+
+                    }
+                }
+
+
+            }
+            else
+            {
+                //show only adjacents hoods
+                Console.WriteLine(selectedCrew.Location.HoodID == 31 ? "" : $"Top {selectedCrew.Location.AdjTop.HoodID}:{selectedCrew.Location.AdjTop.Name}");
+                Console.WriteLine(selectedCrew.Location.HoodID == 31 ? "" : $"Bottom {selectedCrew.Location.AdjBot.HoodID}:{selectedCrew.Location.AdjBot.Name}");
+                Console.WriteLine(selectedCrew.Location.HoodID == 31 ? "" : $"Right {selectedCrew.Location.AdjRig.HoodID}:{selectedCrew.Location.AdjRig.Name}");
+                Console.WriteLine(selectedCrew.Location.HoodID == 31 ? "" : $"Left {selectedCrew.Location.AdjLef.HoodID}:{selectedCrew.Location.AdjLef.Name}");
+
+                int raid = Input.ReadInt("Type the index of the hood:");
+                //guaranteing right input
+                while (raid == 31 || raid < game.GameMap.MapHoods.Min(h => h.HoodID) || raid > game.GameMap.MapHoods.Max(h => h.HoodID))
+                {
+                    Console.WriteLine("Invalid value");
+                    raid = Input.ReadInt("Type the index of the hood:");
+                }
+                //check if the hood want to move is valid in adjancency based on id
+                if (raid == selectedCrew.Location.AdjTop.HoodID || raid == selectedCrew.Location.AdjBot.HoodID || raid == selectedCrew.Location.AdjRig.HoodID || raid == selectedCrew.Location.AdjLef.HoodID)
+                {
+
+                    selectedCrew.Location = game.GameMap.MapHoods.FirstOrDefault(h => h.HoodID == raid);
+                    Hood hoodCombat = selectedCrew.Location;
+                    combat.StartCombat(game, hoodCombat, player);
+                    selectedCrew.AlreadyMovedThisTurn = true;
+
+
+                }
+                //if the input is aint equal the ids adjacents
+                else
+                {
+                    Console.WriteLine("Invalid index hood");
+                    Console.ReadKey();
+
+                }
+
+            }
+        }
         public void SelectCrewMenu(Game game, Player player)
         {
 

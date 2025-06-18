@@ -76,7 +76,6 @@ namespace INeedThat
 
             }
         }
-
         public void CreateMap(Game game)
         {
             Map map = new Map();
@@ -217,11 +216,8 @@ namespace INeedThat
             Player actualPlayer = null;
             //look for a human player to define as a real player
             actualPlayer = Players.FirstOrDefault(p => p.Human);
-
-
             //testing rival
-
-
+            actualPlayer.EnemyAiPlacement(game);
 
             while (gameRunning)
             {
@@ -229,6 +225,21 @@ namespace INeedThat
                 {
                     Console.WriteLine("Your gang is disbanded you lost everyone");
                     gameRunning = false;
+                    break;
+                }
+
+                foreach (Player player in game.Players.ToList())
+                {
+                    if (player.PlayerCrew.Count < 1)
+                    {
+                        Console.WriteLine($"Gang {player.Name} disbanded");
+                        game.Players.Remove(player);
+                    }
+                }
+                if (game.Players.Count <= 1)
+                {
+                    Console.WriteLine("You defeated all rivals");
+                    game.Exit(actualPlayer);
                     break;
                 }
                 //draw the map of hoods
@@ -242,8 +253,11 @@ namespace INeedThat
                 Console.WriteLine("2:Select Crew:");
                 Console.WriteLine("3:Lieutenant Reports:");
                 Console.WriteLine("4:Black Market:");
-                Console.WriteLine("5.End Turn:");
+                Console.WriteLine("5.Raid:");
                 Console.WriteLine("7.Show the other factions:");
+                Console.WriteLine("8.Show crew behind bars:");
+                Console.WriteLine("9.Show crew in hospital:");
+                Console.WriteLine("10.End Turn:");
                 Console.WriteLine("123:Exit:");
                 int choice = Input.ReadInt("Type the choice:");
                 switch (choice)
@@ -264,10 +278,19 @@ namespace INeedThat
                         market.GunMarket(game, actualPlayer);
                         break;
                     case 5:
-                        EndTurn(game, actualPlayer, market, crewmanager);
+                        crewmanager.Raid(game, actualPlayer);
                         break;
                     case 7:
                         ShowOtherFactions(game);
+                        break;
+                    case 8:
+                        SeePrison(actualPlayer);
+                        break;
+                    case 9:
+                        SeeHospital(actualPlayer);
+                        break;
+                    case 10:
+                        EndTurn(game, actualPlayer, market, crewmanager);
                         break;
                     case 123:
                         gameRunning = game.Exit(actualPlayer);
@@ -280,12 +303,7 @@ namespace INeedThat
                 }
             }
 
-
-
-
         }
-
-
         public void DrawMap(Game game)
         {
 
@@ -339,9 +357,6 @@ namespace INeedThat
 
 
         }
-
-
-
         public void SelectHood(Game game, Player human)
         {
             //make a list of all the crewmembers in that hood
@@ -406,7 +421,7 @@ namespace INeedThat
                 //if is a human crew will always be writed with the id for select after
                 if (crew.Aff.Human == true)
                 {
-                    Console.WriteLine($"{crew.CrewID}. {crew}");
+                    Console.WriteLine($"{crew.CrewID}.{crew}");
                 }
                 else
                 {
@@ -417,11 +432,11 @@ namespace INeedThat
                     }
                     else if (playerVisibility >= 15)
                     {
-                        Console.WriteLine($"Name:{crew.Name} Aff:{crew.Aff.Name} Gun:{crew.GunEquip} ");
+                        Console.WriteLine($"Name:{crew.Name} Aff:{crew.Aff.Name} Gun:{crew.GunEquip}");
                     }
                     else if (playerVisibility >= 10)
                     {
-                        Console.WriteLine($"Name:{crew.Name} Aff:{crew.Aff.Name} ");
+                        Console.WriteLine($"Name:{crew.Name} Aff:{crew.Aff.Name}");
                     }
                     else if (playerVisibility >= 5)
                     {
@@ -434,42 +449,8 @@ namespace INeedThat
                 }
             }
 
-            /* Crew selectedCrew = null;   Selecting and make a action with the crew member inside the hood selection
-
-              Console.WriteLine("Select a crew member: 1-Yes 2-No");
-              int selectOrNo = Input.YesorNoInput();
-
-              if(selectOrNo == 1)
-              {
-                 Console.WriteLine("Select the crew");
-                  int crewIndexSelected = Input.ReadInt("Type the index number");
-
-                  while (crewIndexSelected < 0 && crewIndexSelected > human.PlayerCrew.Count)
-                  {
-                      Console.WriteLine("Invalid choice.");
-                      crewIndexSelected = Input.ReadInt("Type the index of the crew member:");
-                  }
-                  foreach (Crew crew in human.PlayerCrew)
-                  {
-                      if (crewIndexSelected == crew.CrewID)
-                      {
-                          selectedCrew = crew;
-                      }
-                  }
-
-
-              }
-              else
-              {
-                  Console.WriteLine("Exiting selection");
-                  Console.ReadKey();
-              }
-
-
-              */
             Console.ReadKey();
         }
-
         public bool Exit(Player player)
         {
             Console.WriteLine("Exiting from the game");
@@ -478,7 +459,6 @@ namespace INeedThat
             Console.ReadKey();
             return false;
         }
-
         public void EndTurn(Game game, Player player, Market market, CrewManagement crewmanager)
         {
 
@@ -487,6 +467,7 @@ namespace INeedThat
             Console.WriteLine("Turn:" + Turn);
             Police();
             PrisonReleases();
+            Hospital();
             Console.ReadKey();
             DistributeHoodProfits();
             market.AlreadyBought = false;
@@ -504,7 +485,6 @@ namespace INeedThat
             }
 
         }
-
         private void Police()
         {
             Random random = new Random();
@@ -596,8 +576,63 @@ namespace INeedThat
 
         }
 
+        private void Hospital()
+        {
+            foreach (Player player in Players)
+            {
+                foreach (Crew crew in player.PlayerCrew.ToList())
+                {
+                    if (crew.MonthsWounded > 0)
+                    {
+
+                        player.PlayerCrew.Remove(crew);
+                        player.InHospitalCrew.Add(crew);
+
+                    }
+                }
+                if (player.InHospitalCrew.Count > 0)
+                {
+                    foreach (Crew crew in player.InHospitalCrew.ToList())
+                    {
+                        if (crew.MonthsWounded <= 0)
+                        {
+                            Console.WriteLine($"{crew.Name} from {crew.Aff.Name} lefted the hospital");
+                        }
+                        else
+                        {
+                            crew.MonthsWounded -= 1;
+                        }
 
 
+                    }
+
+                }
+            }
+        }
+        private void SeePrison(Player player)
+        {
+            if (player.InPrisonCrew.Count > 0)
+            {
+                foreach (Crew prisoner in player.InPrisonCrew)
+                {
+                    Console.WriteLine($"{prisoner.Name} have {prisoner.MonthsInPrison} months left to leave");
+
+                }
+                Console.ReadKey();
+            }
+        }
+        private void SeeHospital(Player player)
+        {
+            if (player.InPrisonCrew.Count > 0)
+            {
+                foreach (Crew wounded in player.InHospitalCrew)
+                {
+                    Console.WriteLine($"{wounded.Name} have {wounded.MonthsWounded} months left to leave");
+
+                }
+                Console.ReadKey();
+            }
+        }
         public void DistributeHoodProfits()
         {
             Console.WriteLine("\nHood Profit Distribution:");
@@ -660,8 +695,6 @@ namespace INeedThat
             }
             Console.ReadKey();
         }
-
-
         private void ShowOtherFactions(Game game)
         {
             Console.WriteLine("Rival Factions:");
