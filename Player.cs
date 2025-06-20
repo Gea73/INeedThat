@@ -74,11 +74,48 @@ namespace INeedThat
             Console.ReadKey();
         }
 
-        public void EnemyAiTurn()
+        public void EnemyAiTurn(Game game, CrewManagement crewManagement)
         {
 
+
+            foreach (Player player in game.Players)
+            {
+                if (player.Human == false)
+                {
+                    if (!player.PlayerCrew.Any(c => c.Captain == true))
+                    {
+                        Console.WriteLine($"Captain of {player.Name} is gone");
+
+                        Crew newCaptain = player.PlayerCrew.Where(c => c.Loyalty > 0).OrderByDescending(c => c.Loyalty).FirstOrDefault();
+                        newCaptain.Captain = true;
+                        Console.WriteLine($"{newCaptain.Name} is the new captain of {newCaptain.Aff.Name}");
+                    }
+
+                    if (player.Respect <= 3 && player.Cash >= 3000)
+                    {
+                        crewManagement.RecruitCrewAi(game, player);
+
+                    }
+                    else if (player.Respect <= 5)
+                    {
+                        crewManagement.RecruitCrewAi(game, player);
+                        crewManagement.RecruitCrewAi(game, player);
+
+                    }
+                    else
+                    {
+                        crewManagement.RecruitCrewAi(game, player);
+                        crewManagement.RecruitCrewAi(game, player);
+                        crewManagement.RecruitCrewAi(game, player);
+                    }
+
+
+
+
+                }
+            }
+
+
         }
-
-
     }
 }

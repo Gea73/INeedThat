@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\crewmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|solutionrelative:player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|c:\\users\\ana.julia\\downloads\\thotiana\\ineedthat\\crewmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|solutionrelative:crewmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\market.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|solutionrelative:market.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\crew.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,16 +31,8 @@
       "RelativeMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|solutionrelative:map.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|c:\\users\\ana.julia\\downloads\\thotiana\\ineedthat\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|solutionrelative:player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\market.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|solutionrelative:market.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8F0EB9B1-A578-4EF4-996A-DB1205A61AAC}|INeedThat.csproj|C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\input.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -54,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,7 +62,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -70,12 +70,11 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAABUAAAAAAAAAAAAAwBgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T10:42:45.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-10T10:42:45.533Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Combat.cs",
               "DocumentMoniker": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Combat.cs",
               "RelativeDocumentMoniker": "Combat.cs",
@@ -83,25 +82,24 @@
               "RelativeToolTip": "Combat.cs",
               "ViewState": "AgIAAKQAAAAAAAAAAAAAAFIAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-18T12:49:10.595Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-18T12:49:10.595Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CrewManagement.cs",
               "DocumentMoniker": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\CrewManagement.cs",
               "RelativeDocumentMoniker": "CrewManagement.cs",
-              "ToolTip": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\CrewManagement.cs",
-              "RelativeToolTip": "CrewManagement.cs",
-              "ViewState": "AgIAACoDAAAAAAAAAAAAACoDAAA9AAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\CrewManagement.cs*",
+              "RelativeToolTip": "CrewManagement.cs*",
+              "ViewState": "AgIAAMYBAAAAAAAAAAAAAIkDAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-17T14:33:06.496Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 2,
               "Title": "Market.cs",
               "DocumentMoniker": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Market.cs",
               "RelativeDocumentMoniker": "Market.cs",
@@ -109,7 +107,8 @@
               "RelativeToolTip": "Market.cs",
               "ViewState": "AgIAACwBAAAAAAAAAAAAAD8BAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-17T14:25:09.926Z"
+              "WhenOpened": "2025-06-17T14:25:09.926Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -137,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Map.cs",
               "DocumentMoniker": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Map.cs",
               "RelativeDocumentMoniker": "Map.cs",
@@ -145,12 +144,11 @@
               "RelativeToolTip": "Map.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAAAAAA4AAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T10:46:45.787Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-10T10:46:45.787Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Game.cs",
               "DocumentMoniker": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Game.cs",
               "RelativeDocumentMoniker": "Game.cs",
@@ -158,12 +156,11 @@
               "RelativeToolTip": "Game.cs",
               "ViewState": "AgIAAPAAAAAAAAAAAAAmwPIAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T10:45:36.713Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-10T10:45:36.713Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Crew.cs",
               "DocumentMoniker": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Crew.cs",
               "RelativeDocumentMoniker": "Crew.cs",
@@ -171,20 +168,20 @@
               "RelativeToolTip": "Crew.cs",
               "ViewState": "AgIAACMAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T10:46:09.392Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-10T10:46:09.392Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "Player.cs",
               "DocumentMoniker": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Player.cs",
               "RelativeDocumentMoniker": "Player.cs",
-              "ToolTip": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Player.cs",
-              "RelativeToolTip": "Player.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAAAB0AAAAnAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Ana.Julia\\Downloads\\thotiana\\INeedThat\\Player.cs*",
+              "RelativeToolTip": "Player.cs*",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAAAFUAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T10:45:55.134Z"
+              "WhenOpened": "2025-06-10T10:45:55.134Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",

@@ -900,5 +900,15 @@ namespace INeedThat
 
             return selectedCrew;
         }
+
+        public Crew RecruitCrewAi(Game game, Player player)
+        {
+            Hood captainloaction = player.PlayerCrew.FirstOrDefault(c => c.Captain == true)?.Location;
+            int lastCrewID = Crew.LastCrewIdUsed(player);
+            Crew crew1 = new Crew(NameRandom(), player, null, AttributeRandom(), AttributeRandom(), AttributeRandom(), 5, lastCrewID + 1);
+            crew1.Location = captainloaction;
+              player.PlayerCrew.Add(crew1);                  
+            return crew1;
+        }
     }
 }
